@@ -1,0 +1,15 @@
+
+
+# vi files
+*~
+*.swp
+
+*.aux
+*.bbl
+*.blg
+*.abx
+*.lof
+*.lot
+*.log
+*.toc
+main.pdf

@@ -1,0 +1,184 @@
+%
+% TCC - César Malerba - Ciência da Computação - INF/UFRGS
+%
+\documentclass[t]{iiufrgs}
+% um tipo especfico de monografia pode ser informado como parmetro opcional:
+%\documentclass[tese]{iiufrgs}
+% monografias em ingls devem receber o parmetro `english':
+%\documentclass[diss,english]{iiufrgs}
+% a opo `openright' pode ser usada para forar incios de captulos
+% em pginas mpares
+% \documentclass[openright]{iiufrgs}
+% para gerar uma verso somente-frente, basta utilizar a opo `oneside':
+% \documentclass[oneside]{iiufrgs}
+\usepackage[T1]{fontenc}        % pacote para conj. de caracteres correto
+\usepackage[utf8]{inputenc}   % pacote para acentuao
+\usepackage{graphicx}           % pacote para importar figuras
+\usepackage{times}              % pacote para usar fonte Adobe Times
+%\usepackage{mathptmx}          % p/ usar fonte Adobe Times nas frmulas
+
+%
+% Informaes gerais
+%
+\title{Exploits: técnicas, detecção e prevenção}
+
+\author{Malerba}{César}
+% alguns documentos podem ter varios autores:
+%\author{Flaumann}{Frida Gutenberg}
+%\author{Flaumann}{Klaus Gutenberg}
+
+% orientador e co-orientador so opcionais (no diga isso pra eles :))
+\advisor[Prof.~Dr.]{Weber}{Raul Fernando}
+%\coadvisor[Prof.~Dr.]{Knuth}{Donald Ervin}
+
+% a data deve ser a da defesa; se nao especificada, so gerados
+% mes e ano correntes
+%\date{maio}{2001}
+
+% o nome do curso pode ser redefinido (ex. para TCs)
+\course{Ciência da Computação}
+
+% o local de realizao do trabalho pode ser especificado (ex. para TCs)
+% com o comando \location:
+\location{Porto Alegre}{RS}
+
+% itens individuais da nominata podem ser redefinidos com os comandos
+% abaixo:
+% \renewcommand{\nominataReit}{Prof\textsuperscript{a}.~Wrana Maria Panizzi}
+% \renewcommand{\nominataReitname}{Reitora}
+% \renewcommand{\nominataPRE}{Prof.~Jos{\'e} Carlos Ferraz Hennemann}
+% \renewcommand{\nominataPREname}{Pr{\'o}-Reitor de Ensino}
+% \renewcommand{\nominataPRAPG}{Prof\textsuperscript{a}.~Joc{\'e}lia Grazia}
+% \renewcommand{\nominataPRAPGname}{Pr{\'o}-Reitora Adjunta de P{\'o}s-Gradua{\c{c}}{\~a}o}
+% \renewcommand{\nominataDir}{Prof.~Philippe Olivier Alexandre Navaux}
+% \renewcommand{\nominataDirname}{Diretor do Instituto de Inform{\'a}tica}
+% \renewcommand{\nominataCoord}{Prof.~Carlos Alberto Heuser}
+% \renewcommand{\nominataCoordname}{Coordenador do PPGC}
+% \renewcommand{\nominataBibchefe}{Beatriz Regina Bastos Haro}
+% \renewcommand{\nominataBibchefename}{Bibliotec{\'a}ria-chefe do Instituto de Inform{\'a}tica}
+% \renewcommand{\nominataChefeINA}{Prof.~Jos{\'e} Valdeni de Lima}
+% \renewcommand{\nominataChefeINAname}{Chefe do \deptINA}
+% \renewcommand{\nominataChefeINT}{Prof.~Leila Ribeiro}
+% \renewcommand{\nominataChefeINTname}{Chefe do \deptINT}
+
+% A seguir so apresentados comandos especficos para alguns
+% tipos de documentos.
+
+% Relatrio de Pesquisa [rp]:
+% \rp{123}             % numero do rp
+% \financ{CNPq, CAPES} % orgaos financiadores
+
+% Trabalho Individual [ti]:
+% \ti{123}     % numero do TI
+% \ti[II]{456} % no caso de ser o segundo TI
+
+% Trabalho de Concluso [tc]:
+% alm de definir explicitamente o nome do curso (\course) e o local
+% de realizao (\location),  necessrio redefinir a nominata,
+% pois as informaes necessrias dependem do curso. Ex.:
+%\renewcommand{\nominata}{
+%        UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL\\
+%        Reitora: Prof\textsuperscript{a}.~Wrana Maria Panizzi\\
+%        Pr-Reitor de Ensino: Prof.~Jos Carlos Ferraz Hennemann\\
+%        Diretor do Instituto de Informtica: Prof.~Philippe Olivier Alexandre Navaux\\
+%        Coordenador do curso: Prof.~Seu Creysson\\
+%        Bibliotecria-chefe do Instituto de Informtica: Beatriz Regina Bastos Haro
+%}
+
+% Monografias de Especializao [espec]:
+% \espec{Redes e Sistemas Distribudos}      % nome do curso
+% \coord[Profa.~Dra.]{Weber}{Taisy da Silva} % coordenador do curso
+% \dept{INA}                                 % departamento relacionado
+
+%
+% palavras-chave
+% iniciar todas com letras minsculas, exceto no caso de abreviaturas
+%
+\keyword{segurança}
+\keyword{teste de software}
+\keyword{exploits}
+
+%
+% inicio do documento
+%
+\begin{document}
+
+% folha de rosto
+% s vezes  necessrio redefinir algum comando logo antes de produzir
+% a folha de rosto:
+% \renewcommand{\coordname}{Coordenadora do Curso}
+\maketitle
+
+% dedicatoria
+\clearpage
+\begin{flushright}
+\mbox{}\vfill
+{\sffamily\itshape
+``If I have seen farther than others,\\
+it is because I stood on the shoulders of giants.''\\}
+--- \textsc{Sir~Isaac Newton}
+\end{flushright}
+
+% agradecimentois
+\chapter*{Agradecimentos}
+Estou por agradecer\ldots
+
+% sumario
+\tableofcontents
+
+% lista de abreviaturas e siglas
+% o parametro deve ser a abreviatura mais longa
+\begin{listofabbrv}{SPMD}
+        \item[EBP] Extended Base Pointer
+		\item[ESP] Extended Stack Pointer
+        \item[NUMA] Non-Uniform Memory Access
+        \item[SIMD] Single Instruction Multiple Data
+        \item[SPMD] Single Program Multiple Data
+\end{listofabbrv}
+
+% idem para a lista de smbolos
+%\begin{listofsymbols}{$\alpha\beta\pi\omega$}
+%       \item[$\sum{\frac{a}{b}}$] Somatrio do produtrio
+%       \item[$\alpha\beta\pi\omega$] Fator de inconstncia do resultado
+%\end{listofsymbols}
+
+% lista de figuras
+\listoffigures
+
+% lista de tabelas
+%\listoftables
+
+% resumo na lngua do documento
+\begin{abstract}
+a escrever\ldots
+\end{abstract}
+
+% resumo na outra língua
+% como parametros devem ser passados o título e as palavras-chave
+% na outra língua, separadas por vírgulas
+\begin{englishabstract}{Exploits: técnicas, detecção e prevenção}{security, exploits, testing}
+to be written\ldots
+\end{englishabstract}
+
+% capítulos em arquivo próprio
+\include{conceitos_iniciais}
+\include{classificacao}
+\include{null_pointer_exploit}
+\include{heap_overflow}
+\include{programacao_segura}
+\include{fuzzing}
+
+%
+% referencias
+% aqui ser usado o environment padrao `thebibliography'; porm, sugere-se
+% seriamente o uso de BibTeX e do estilo abnt.bst (veja na pgina do
+% UTUG)
+%
+\begin{thebibliography}{este-parametro-nao-eh-usado-pelo-estilo-ABNT}
+
+	\bibitem[ANLEY, 2007]{Anley:Shellcoders} ANLEY, Chris. \textbf{The shellcoder's Handbook:
+	 discovering and exploring security holes}. 2007. Segunda edição.
+
+\end{thebibliography}
+
+\end{document}
