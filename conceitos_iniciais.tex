@@ -52,7 +52,8 @@
 		\item[Stack]
 			Mantém controle das chamadas de funções. Possibilita a recursividade. Logo, possui
 			tamanho variável - crescendo do endereço mais alto para o mais baixo (sendo antagonista do Heap - ver
-			figura XXXX). Esse crescimento é que torna possível que uma chamada de função que tenha seus dados
+			figura \ref{fig:regioes_memoria}). 
+			Esse crescimento é que torna possível que uma chamada de função que tenha seus dados
 			sobrescritos influencie numa chamada de função anterior. Esse é o princípio do buffer overflow - tratado
 			posteriormente.
 		\item[Enviroment]
@@ -60,6 +61,13 @@
 			Essa seção possui permissão de escrita, mas como bss, data e text, possui tamanho fixo.
 	\end{description}
 
+	\begin{figure}
+		\begin{center}
+		\includegraphics[width=0.6\textwidth]{regioes_memoria.pdf}
+		\caption{Regiões de memória em um processo.}
+		\label{fig:regioes_memoria}
+		\end{center}
+	\end{figure}
 
 	\section{Funcionamento mais detalhado do Stack}
 
