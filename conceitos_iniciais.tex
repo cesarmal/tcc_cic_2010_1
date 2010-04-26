@@ -70,6 +70,32 @@
 	\end{figure}
 
 	\section{Funcionamento mais detalhado do Stack}
+	A pilha é uma região contínua com base fixa e tamanho variável.
+	Na arquitetura abordada por esse trabalho, x86 (bem como em muitas outras), a pilha cresce
+	em direção ao endereço mais baixo. É organizada em \textsl{frames} que são os blocos
+	alocados quando ocorrem chamadas a funções. Cada \textsl{frame} contém(ver figura \ref{fig:stack_frame}):
+	\begin{itemize}
+		\item parâmetros
+		\item variáveis locais
+		\item endereço de retorno da função anterior
+		\item endereço do \textsl{frame} da função que a chamou
+	\end{itemize}
+
+	\begin{figure}
+		\begin{center}
+		\includegraphics[width=0.5\textwidth]{stack_frame_furlan.jpg}
+		\caption{Organização do \textsl{frame} na pilha. Retirado de \cite{Furlan2005} pg. 17.}
+		\label{fig:stack_frame}
+		\end{center}
+	\end{figure}
+
+	\subsection{Chamada de funções}
+	Quando uma função é chamada, seus parâmetros são empilhadas e posteriormente o endereço
+	do retorno. Isso fica a encargo da função que faz a chamada.
+	Para completar o \textsl{frame}, aquela que é chamada, empilha o endereço do frame da função chamadora
+	(EBP) e posteriormente aloca na pilha o espaço correspondente a suas variáveis locais.
+	É importante ressaltar que, caso o endereço de retorno, empilhado por quem chama, seja alterado,
+	o fluxo de execução é mudado. Pois é justamente este o princípio do \textsl{buffer overflow}.
 
 	\section{Funcionamento mais detalhado do Heap}
 	A porção de memória correspondente ao heap possibilita ao programador alocar dinamicamente memória
