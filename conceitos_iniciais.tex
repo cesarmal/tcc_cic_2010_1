@@ -102,6 +102,24 @@
 	que fica disponível durante toda a execução para qualquer chamada de função. Diferentemente
 	da memória alocada no stack - que é perdida quando a função retorna.
 
+	\section{Mapemamento de memória anônimo}
+	Como visto no funcionamento básico do Heap, a fragmentação é um problema a ser considerado.
+	Uma forma alternativa de alocar memória dinamicamente que não usa o Heap são os mapeamentos anônimos.
+	No Linux por exemplo, através da função mmap() é possível alocar um bloco de memória contínuo
+	fora do Heap que não está sujeito aos problemas de fragmentação.
+	Conforme, \cite{Love2007}, é possível considerar esse espaço de memória como um novo Heap
+	vindo de apenas uma alocação.
+	No exemplo a seguir, é requisitado uma porção de memória de 64 bytes iniciando em NULL.
+	\begin{verbatim}
+		mmap(NULL, 64, PROT_READ | PROT_WRITE,
+			MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+	\end{verbatim}
+	Na técnica \textsl{NULL pointer exploit}, conforme veremos mais adiante, essa possibilidade
+	de alocarmos um bloco com o início pré-determinado é muito útil.
+	No caso da chamada de mmap() do exemplo anterior, estamos obtendo um bloco de 64 bytes começando
+	no endereço zero(NULL). Isso nos permite colocar código executável nessa porção da memória e,
+	na presença de uma vulnerabilidade, desviar a execução para esse ponto.
+	
 	\section{Registradores de controle}
 	Uma parte fundamental da arquitetura que deve ser mencionada são os registradores que possuem
 	relação direta com o gerenciamento da memória.
