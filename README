@@ -8,6 +8,17 @@ Orientado por Raul Fernando Weber
 Para gerar o pdf, faça "make".
 Será gerado "main.pdf".
 
+################################################################################################
+REQUISITOS
 Lista de pacotes Debian necessários para gerar o pdf corretamente (sudo apt-get install ...):
 	latex-mk (suporte ao Makefile)
 	texlive-lang-portuguese (separação de palavras sem erros)
+Também é preciso instalar as classes do grupo de usuários TEX da UFRGS (UTUG).
+O arquivo está em http://www.inf.ufrgs.br/utug/download/iiufrgs-4.3.1.tar.bz2
+Para instalar:
+	1- $ mkdir /tmp/utug
+	2- $ tar -xvjf iiufrgs-4.3.1.tar.bz2 -C /tmp/utug
+	3- $ cd /tmp/utug
+	4- $ mkdir -p ~/texmf/tex/latex
+	5- Editar o Makefile trocando INSTALLDIR por ~/texmf
+	6- make install
