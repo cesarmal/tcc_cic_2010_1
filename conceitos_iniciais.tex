@@ -99,8 +99,21 @@
 
 	\section{Funcionamento mais detalhado do Heap}
 	A porção de memória correspondente ao heap possibilita ao programador alocar dinamicamente memória
-	que fica disponível durante toda a execução para qualquer chamada de função. Diferentemente
-	da memória alocada no stack - que é perdida quando a função retorna.
+	que fica disponível durante toda a execução para qualquer chamada de função.
+	Existem diversas formas de administrar a memória do heap, mas o mais encontrado, conforme
+	\cite{Love2007}, é dividir o todo em partições de potências de 2. Chamadas à função malloc()/free(),
+	em última análise, correspondem a operações de alocar/liberar partições internas do heap.
+	Normalmente a organização das partições se dá como forma de uma lista encadeada.
+	Uma chamada a free(), por exemplo, pode implica acerto de diversos ponteiros que existem
+	dentro das partições no heap.
+	 
+
+	Havendo uma validação incorreta no software, pode ocorrer um \textsl{overflow} na área do
+	heap. Se os dados escritos sobrepuserem os valores dos ponteiros de controle interno dos blocos,
+	fica aberto um caminho para que um atacante consiga uma escrita em um endereço arbitrário.
+	Pois é esse o princípio básico de funcionamento de \textsl{Heap Overflow}. Ele pressupõe
+	o conhecimento aprofundado da gerência do heap; pois só dessa forma é possível prever
+	exatamente como os blocos são mantidos.
 
 	\section{Mapemamento de memória anônimo}
 	Como visto no funcionamento básico do Heap, a fragmentação é um problema a ser considerado.
@@ -135,6 +148,11 @@
 	Outra parte fundamental de quase todo \textsl{exploit} é o chamado \textsl{shellcode}.
 	Podemos definí-lo, segundo \cite{Anley2007}, como um conjunto de instruções que são injetados
 	e executados por um programa através de um \textsl{exploit}. 
-	Podemos considerá-lo como o objetivo principal do atacante - esse é o programa que ele cria
-	para perverter o uso do sistema.
+
+
+	A palavra \textsl{shell} contida em seu nome tem origem no fato de, normalmente, ele ser usado
+	para abrir um \textsl{shell} na máquina atacada. Sendo aberto com permissões de \textsl{root},
+	o atacante assume controle absoluto do sistema. Ainda que isso seja o mais comum, o \textsl{shellcode}
+	não se restringe a isso. Como qualquer outro programa, ele, em muitos casos, só é limitado pela imaginação
+	do seu construtor.
 	
