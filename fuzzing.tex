@@ -2,11 +2,360 @@
 \chapter{Fuzzing: detecção de vulnerabilidades}
 \label{chap:fuzzing}
 
+	Dentre muitas alternativas na busca por vulnerabilidades no software,
+	a abordagem fuzzing, sem dúvida, deve ser destacada.
+	Constitui um meio que pode resultar em ótima relação custo benefício,
+	pois pode, em muitos casos, oferecer uma resposta rápida e de baixo custo.
+	Vem se tornando cada vez mais sofisticada e já assume papel importante
+	em grandes desenvolvedores de software.
+
 	\section{O que é fuzzing?}
+		Enquanto as técnicas padrão de teste de software se concentram em testes positivos
+		(também conhecidos como testes de conformidade), a técnica fuzzing é voltada
+		para os requisitos negativos.
+		Não busca testar as features, mas visa verificar o comportamento do software nos casos em que
+		o sistema recebe entradas mal formadas ou fora do padrão esperado.
 
-	\section{Fuzzing aplicado ao teste de software}
+		Essa característica é extremamente interessante no que se refere à detecção de vulnerabilidades.
+		Isso porque elas geralmente são descobertas quando se busca combinações de entradas não
+		testadas originalmente pelo desenvolvedor.
 
-	\section{Detectando vulnerabilidades}
+		Podemos compará-la à técnica injeção de falhas - muito embora
+		essa seja mais conhecida por testes em hardware. O princípio, porém, é muito semelhante.
+		Entradas mal formadas são fornecidas ao hardware de forma a sabermos com exatidão
+		as possíveis reações do sistema.		
+		
+		Considerando as observações introduzidas acima, definimos fuzzing, conforme \cite{Ari2008},
+		como {\bf um método de descoberta de falhas no software que fornece entradas inesperadas
+		ao sistema e o monitora esperando por exceções} . 
 
-	\section{Exemplos}
+		Por essa definição, vemos que nenhum conhecimento do funcionamento interno da aplicação é exigido.
+		Nesse sentido, fuzzing é considerado um tipo de teste caixa preta (Black Box Testing) - mas é importante
+		ressaltar que muito embora o código fonte não seja necessário, ele pode ser de grande
+		ajuda na aplicação do método. Há, ainda, novas formas de fuzzing que partem do somente código fonte para
+		geração dos testes. A denominada fuzzing de caixa branca (Whitebox Fuzz Testing) busca aplicar
+		o conceito central de variação nas entradas aliada ao conhecimento interno da aplicação visando
+		superar barreiras intrínsecas aos testes caixa preta.
+
+		Vemos, portanto, que esse é um campo extremamente amplo dentro da área de testes de software.
+		Nosso intuito é fornecer uma visão ampla que permita demonstrar seu valor no contexto
+		da busca por vulnerabilidades.
+
+	\section{Origens e breve histórico}
+	
+		\subsection{Uso do conceito antes do surgimento oficial}
+			Essa metodologia de teste é relativamente recente. Surge na década de 1980.
+			A primeira ferramenta com conceitos fuzzing teria surgido com o \textsl{The Monkey}.
+			Não era um software, mas um gerador de cliques e movimentos de mouse que visavam simular
+			um macaco utilizando o Macintosh das maneiras mais inesperadas possíveis. Os desenvolvedores
+			a consideraram uma excelente ajuda pois através dela puderam descobrir uma série de bugs e
+			conseguiram aumentar a robustez do sistema. \cite{FolkloreDotOrg}.
+	
+		\subsection{O surgimento oficial}
+			A experiência acima seria uma das primeiras formas de uso do conceito de fuzzing.
+			Mas como marco oficial do nascimento, podemos considerar a pesquisa feita por Barton Miller
+			no final da década de 1980 e início dos anos 90. Como fruto do seu trabalho, surgiu a primeira
+			ferramenta fuzzing em software chamada Fuzz. Miller e sua equipe a utilizaram para gerar entradas
+			randômicas para testar ferramentas básicas dos sistemas UNIX. Sua surpresa foi enorme em perceber
+			como foi possível derrubar boa parte das aplicações sem muito esforço. Ficava nítido o enorme
+			potencial de um novo conceito a ser explorado.
+
+		\subsection{O desenvolvimento da técnica}
+			A partir do final da década de 1990, os pesquisadores, entusiasmados com os resultados
+			iniciais, criaram o projeto PROTOS. Seu objetivo estava na geração de suítes de teste capazes
+			de simplificar a análise de protocolos - como HTTP, DNS e SNMP.
+			Nesse ponto, a simples geração de entrada randômica já havia evoluído para ferramentas
+			que modelavam os protocolos.
+			No início dos anos 2000, a Microsoft chegou a investir no projeto PROTOS.
+			Esse gigante do software viria apostar fortemente nesse caminho, pois como veremos
+			mais adiante, seção \ref{sec:white_fuzz}, ela será responsável pela criação de importantes 
+			ferramentas na área.
+
+	\section{Conceitos importantes}
+		A seguir são discutidos conceitos que são peças de grande relevância para o melhor
+		entendimento da técnica fuzzing.
+		
+		\subsection{Cobertura}
+			Quais partes do código da aplicação testado são testadas.
+			Esse conceito retrata um dos objetivos básicos de qualquer tipo de teste.
+			A necessidade de cobrir o máximo possível o código da aplicação alvo.
+		
+		\subsection{Superfície de ataque}
+			Muito embora a intenção seja alcançar cobertura máxima, muitas vezes
+			certo trechos do código simplesmente são inacessíveis a fatores externos.
+			De forma que, nenhum tipo de entrada possa alterar em nada seu comportamento.
+			A superfície de ataque é justamente todo o código possível de ser coberto - pois,
+			em contraste ao exposto acima, é influenciável por ações do usuário.
+ 
+	\section{Etapas Fuzzing}
+		Segundo \cite{Ari2008}, podemos dividir a aplicação da metodologia fuzzing
+		de teste em 5 etapas.
+		\begin{itemize}
+			\item{Identificação das entradas}
+			\item{Geração das entradas}
+			\item{Envio das entradas}
+			\item{Monitoramento do alvo}
+			\item{Análise dos resultados}
+		\end{itemize}
+		\subsection{Identificação das entradas}
+			Etapa que corresponde à busca por interfaces ao sistema alvo.
+			Podem ser sockets de rede, variáveis de ambiente, arquivos, 
+			argumentos da linha de comando, interfaces de chamada remota(RPC), entre outros.
+			Toda e qualquer forma de comunicação que possa influir na execução deve ser considerada.
+			Como um exemplo mais surpreendente, podemos citar a memória compartilhada.
+		\subsection{Geração das entradas}
+			É o ponto crítico da metodologia. Saber como criar os dados a serem passados ao alvo.
+			Podem ser completamente randômicos, mutações de dados pré-existentes ou mesmo fruto de
+			uma completa modelagem de um protocolo. Se estamos testando um servidor web por exemplo, podemos
+			gerar requisições totalmente aleatórias, alterar sessões web legítimas gravadas para inserir
+			possíveis falhas ou até modelarmos o protocolo HTTP para criação de sessões semi-válidas.
+		\subsection{Envio das entradas}
+			Consiste no fornecimento das entradas criadas ao sistema alvo.
+			Implica o contato com o sistema através de suas interfaces.
+			Seja ela a linha de comando, o sistema de arquivos ou conexões ao um servidor.
+			Apenas alterar uma variável de ambiente antes de iniciar a aplicação testada
+			já pode ser considerada um envio de entrada.
+		\subsection{Monitoramento do alvo}
+			Pouco adianta interagir com sistema testado de todas as formas possíveis sem acompanhar
+			criteriosamente sua execução. Suas manifestações devem ser observadas e possíveis
+			falhas ou problemas, objetivos do teste, não podem passar despercebidas.
+			Naturalmente, quanto mais qualificada a técnica fuzzing, maior a capacidade de
+			identificação de problemas no sistema alvo.
+			Por isso, saber identificar, por exemplo, falhas de corrupção de memória, 
+			negações de serviço, acessos não permitidos, constitui o grande diferencial de um fuzzer.
+			O uso de um debugger na aplicação alvo é uma das alternativas.
+		\subsection{Análise dos resultados}
+			Com as informações coletadas pelo monitoramento, torna-se necessário
+			identificar se existem ou não falhas de segurança.
+			Muitas vezes os problemas manifestados constituem bugs que não implicam
+			possibilidade de exploit.
+			Por isso a necessidade de uma análise detalhada e qualificada para que
+			as reais aberturas no sistema avaliado sejam encontradas. 	
+		
+
+	\section{Tipos de fuzzers}
+		Para classificar os fuzzers podemos seguir dois critérios básicos.
+		Eles determinam a área de atuação e o tipo de entradas geradas.
+		\begin{itemize}
+			\item{Tipo de vetor de ataque}
+			\item{Complexidade dos casos de teste}
+		\end{itemize}
+
+		\subsection{Tipos por vetor de ataque}
+			De acordo com o tipo de aplicação ao qual o fuzzer se dirige, ele possui
+			um determinado vetor de ataque. Pode ser voltado, por exemplo,
+			para testes de clientes web (como browsers). Nesse caso, seu vetor
+			de ataque está no protocolo HTTP. De forma análoga, se for voltado para 
+			testes de leitores de pdf, seu vetor de ataque estará na geração dos arquivos.
+		
+		\subsection{Tipos por complexidade de casos de teste}
+			A complexidade com que o fuzzer cria suas entradas constitui outro meio
+			de classificação.
+			Alguns podem ser muito simples pois apenas randomizam certos parâmetros antes
+			de fornecê-los ao sistema alvo. Outros, porém, podem conter todo um modelo
+			de um protocolo; sendo capazes de gerar complexas interações semi-válidas
+			em que apenas certos parâmetros sofrem algum tipo de alteração visando
+			disparar algum erro. 
+
+
+			Geralmente, os mais simples, meramente randômicos, acabam possuindo
+			baixa cobertura do código testado. Isso porque eles não alcançam
+			grande profundidade na aplicação testada. Logo na superfície, algum
+			parâmetro gerado acaba não sendo aceito e mudanças em outros pontos
+			da entrada sequer são considerados. É o caso, por exemplo,
+			de um testador de um servidor HTTP que, sendo totalmente randômico,
+			cria apenas requisições mal formadas que sequer chegam a disparar
+			alguma rotina de geração de resposta pelo servidor.
+			
+			
+			Por esse critério, podemos citar as seguintes famílias de fuzzer:
+			\begin{description}
+				\item[Estáticos ou randômicos]
+					Os mais simples. Não possuem qualquer noção de protocolo.
+					Testam aplicações baseadas em requisição/resposta sem controle de estado.
+				\item[Baseados em bloco]
+					Implementam estruturas básicas de requisição/resposta e são
+					capazes de validar as entradas de forma a respeitar
+					parâmetros como checksums.
+				\item[De geração dinâmica ou baseados em evolução]
+					Não compreendem o protocolo a ser testado, mas baseado
+					nas respostas do sistema podem, dinamicamente, gerar entradas.
+				\item[Baseados em modelos ou simuladores]
+					Podem constituir a implementação completa de um protocolo.
+					Permitem gerar entradas que em sequência de acordo com um estado.
+					Por isso, podem, por exemplo, interagir com aplicações
+					que trabalham com sessões.
+			\end{description}
+
+		 
+
+	\section{Monitoramento da aplicação}
+		A interação com a aplicação testada torna possível examiná-la de forma
+		a revelar os erros; ainda assim, isso de nada é útil caso não saibamos
+		identificar no sistema alvo os sintomas das falhas.
+		O monitoramento é o responsável por passar os alertas de problemas.
+		Logo a pergunta que se impõe é: o que pode ocorrer no sistema
+		indicando uma falha?
+		Entre as manifestações que devem ser reconhecidas pelo monitoramento,
+		podemos citar:
+		\begin{itemize}
+			\item{Negações de serviço (DoS) (o sistema deixa de responder)}
+			\item{Problemas relacionados à memória (segfault)}
+			\item{Injeção de metadados (como injeção de SQL)}
+			\item{Permissão de acesso a áreas proibidas}
+		\end{itemize}
+
+
+		As formas de monitoramento variam, naturalmente, tanto quanto
+		os próprios sistemas testados.
+		Acompanhar uma aplicação escrita em C e um portal web em PHP
+		são tarefas bem distintas - exigindo, naturalmente, técnicas diferenciadas.
+
+
+		Uma forma genérica é garantir que o alvo está sempre respondendo corretamente
+		a certas interações. Assim, é possível identificar se ocorre ou não uma negação
+		de serviço. Logo, manter requisições bem formadas com respostas conhecidas intercaladas
+		aos demais testes, auxilia o reconhecimento de falhas.	
+
+		Outro meio, talvez o mais natural, é acompanhar a saída gerada pelo alvo na suas mais
+		variadas formas. É o caso da saída padrão, dos logs, de arquivos temporários, entre outros.
+		O fuzzer pode procurar por padrões que revelem as falhas - como, por exemplo, avisos
+		de erros de corrupção de memória.
+
+
+		O uso de um depurador (debugger) também constitui outra forma de monitoramento.
+		Com esse recurso, podemos esperar por determinadas exceções e descobrí-las
+		tão prontamente os casos de teste as gerem.
+	
+		
+		\subsection{Meios intrusivos} 
+			Para auxiliar na descoberta das falhas o mais na origem possível,
+			existem métodos ainda mais intrusivos que os expostos anteriormente.
+			Fazer com que a aplicação testada carregue bibliotecas diferentes das
+			originais é um dos caminhos.
+			
+
+			Trocando a biblioteca que faz o gerenciamento de memória dinâmica, responsável
+			pelo chamadas como malloc(), é possível devolver devolver à aplicação
+			blocos de memória que permitam a fácil identificação de overflows. Assim,
+			muito antes que um erro de corrupção de memória fosse gerado, ele já teria sido
+			detectado.
+
+			
+			Numa mesma abordagem, a técnica chamada simulação binária, \cite{Ari2008} pg. 181,
+			também visa acompanhar com enorme proximidade o sistema alvo.	
+			Esse é o caso da ferramenta Valgrind (encontrada em http://valgrind.org).
+			Nela, é usada uma CPU sintética que recebe todas as instruções e
+			pode analisá-las na busca por problemas antes de serem repassadas à CPU real.
+			Todos os acessos à memória são controlados.
+			Com esse tipo de acompanhamento, as vulnerabilidades podem ser encontradas
+			em tempo real e informações valiosas sobre sua possibilidade de exploração
+			já são conhecidas.
+			
+
+	\section{White Fuzz Testing: execução simbólica e fuzzing}
+	\label{sec:white_fuzz}
+		
+		Nessa seção, apresentamos uma nova abordagem do ramo fuzzing.
+		Fruto da pesquisa de Patrice Godefroid e associados descrita em \cite{Godefroid2008}.
+		Originalmente, a técnica fuzzing sequer se apoiava no código fonte para busca
+		de qualquer tipo de auxílio no aumento de sua efetividade.	
+		Com o tempo, porém, foi possível perceber que, partindo de certas informações
+		do funcionamento interno da aplicação, os resultados obtidos poderiam ser melhores.
+		Vindo do outro extremo, o White Fuzz Testing não apenas faz uso do código fonte,
+		mas o executa simbolicamente - sendo totalmente caixa branca.  
+		
+		\subsection{Deficiências do método caixa preta}
+			Antes de apresentarmos a técnica de fuzzing caixa branca desenvolvida
+			por pesquisadores da Microsoft, é necessário expor certas deficiências naturais dos
+			testes de caixa preta.
+			
+			Tomemos como exemplo uma aplicação que possua 3 parâmetros de entrada (de 32 bits): x, y e z.
+			No seu código fonte, existe uma condição na qual, a menos que valor de y seja 25, apenas
+			um primeiro bloco da aplicação é executado. Logo percebemos que, a cobertura de um teste
+			caixa preta nesse caso fica seriamente prejudicada. Dificilmente teremos entradas
+			geradas com essa particularidade a ponto de explorar com efetividade possíveis erros.
+			Essa dificuldade de percorrer todos os caminhos de execução possíveis
+			é um fator que limita muito a capacidade da maioria das abordagens fuzzing de caixa preta.
+
+		\subsection{Funcionamento básico}
+			A técnica opera fornecendo, primeiramente, entradas válidas à aplicação.
+			Então ela é executada simbolicamente com todas as condições sendo registradas.
+			Cada um dos blocos condicionais acaba escolhendo um caminho distinto de execução
+			dadas as entradas iniciais. Assim, é possível saber que certos valores de entradas
+			implicam a exploração de certos caminhos. Numa próxima execução, usando um resolvedor
+			lógico, as condições são negadas de forma a descobrir novos valores de entrada
+			que possibilitem que a aplicação siga outros caminhos.
+
+			
+			Operando iterativamente, o fuzzer aliado à execução simbólica acaba explorando
+			os mais variados caminhos existentes.
+			O intuito é garantir que situações inesperadas sejam encontradas graças a combinações
+			de entradas escolhidas justamente para adentrar os blocos de código que podem
+			não ter sido testados adequadamente.
+			
+			
+			Para ilustrar, simplificadamente, apresentamos abaixo um pequeno trecho de código.
+			\begin{lstlisting}[label=whitebox_fuzz_example,caption=Código de teste para ilustrar técnica]
+void test(int a, int b) {
+    if(a > 10) {
+	    if(b == 5)
+	        error();
+	    ok();
+    } else {
+	    ok();
+    }
+}
+			\end{lstlisting}
+
+
+			No caso acima, a poderíamos fornecer, inicialmente, os valores 0 e 1 para a e b respectivamente.
+			O primeiro bloco condicional, avaliado pela execução simbólica, assumiria falso e
+			cairíamos em ok().
+			
+
+			Na segunda etapa, o resolvedor dos blocos condicionais, buscando negar a primeira condição,
+			descobriria, que o valor de a deveria ser 11. Mantido o valor inicial de b, conseguiríamos,
+			nessa nova execução simbólica, chegar em um novo bloco condicional.
+			
+
+			Dessa vez, b sendo 1, caímos novamente em ok().
+			Na iteração seguinte, porém, o algoritmo seria capaz de identificar que, para negar
+			o segundo bloco condicional, seria preciso que b assumisse o valor 5.
+			Assim, com a valendo 11 e b com valor 5, numa última execução encontraríamos error().
+
+			
+			Logo, o Whitebox Fuzz necessita de um sistema muito sofisticado de execução simbólica
+			bem como um resolvedor de condições suficientemente inteligente para encontrar os valores
+			corretos de entradas que explorem toda aplicação.
+			
+
+		\subsection{Limitações}
+			Teoricamente, com a aplicação do Whitebox Fuzz,  é possível alcançar 
+			O alcance de uma cobertura completa fica limitado, segundo os autores, por dois fatores:
+			\begin{itemize}
+				\item{Explosão combinatorial de caminhos}
+				\item{Imperfeições da execução simbólica}
+			\end{itemize}
+			Devido a enorme quantidade de possíveis caminhos de uma aplicação de grande porte,
+			pode não ser factível explorar a todos.
+			Isso pode ser contornado examinando certas funções em isolado através de sumários que
+			identificam pré-condições e pós-condições de cada uma.
+			
+			Além da dificuldade da quantidade dos caminhos, as imperfeições na execução simbólica
+			podem apresentar sérias restrições. Instruções muito complexas bem como chamadas de sistema
+			e de certas bibliotecas podem ser extremamente difíceis de prever.
+			Nesses casos, a randomização pode ser usada mas gerando prejuízos à precisão.
+			
+		\subsection{SAGE: implementação da técnica}
+			Como resultado da pesquisa, foi implementado na Microsoft, a ferramenta SAGE
+			(Scalable, Automated, Guided Execution).
+			Embora o acesso a SAGE seja restrito a pessoal da empresa, a abordagem aplicada
+			é de domínio público.
+			Pela experiência relatada em \cite{Godefroid2008}, é possível dizer que
+			a SAGE foi bem sucedida em encontrar erros de segurança até então não
+			descobertos por outras ferramentas.
+			Os autores, observam, porém, que uma das suas grandes dificuldades é a lentidão
+			imposta pela execução simbólica.
+				
 
