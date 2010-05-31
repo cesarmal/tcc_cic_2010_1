@@ -11,9 +11,7 @@ int main() {
 	int fdout = socket(PF_PPPOX, SOCK_DGRAM, 0);
 	int i;
 
-	mem = mmap(NULL, 64, PROT_READ | \
-				PROT_WRITE, MAP_FIXED |\
-				MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+	mem = mmap(NULL, 64, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
 	printf("mmap=%x\n", mem);
 
