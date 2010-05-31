@@ -12,8 +12,15 @@ Explicar a técnica de exploit:
 
 Como adicionar livro com vários autores usando jabref?
 
-Incluir lista de termos (incluir RPC-remote procedure call).
+Incluir lista de termos:
+	RPC-remote procedure call
+	SWF
+	CVE
 
 Colocar labels nas seções para fazer referência cruzada.
 
 Citação de página web: como fazer?
+
+Adicionar seção sobre cadastro de vulnerabilidades no CVE.
+
+Adicionar definição de memcpy usada em exemplo.
