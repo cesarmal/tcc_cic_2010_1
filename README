@@ -13,6 +13,8 @@ REQUISITOS
 Lista de pacotes Debian necessários para gerar o pdf corretamente (sudo apt-get install ...):
 	latex-mk (suporte ao Makefile)
 	texlive-lang-portuguese (separação de palavras sem erros)
+	texlive-fonts-recommended
+	texlive-latex-extra
 Também é preciso instalar as classes do grupo de usuários TEX da UFRGS (UTUG).
 O arquivo está em http://www.inf.ufrgs.br/utug/download/iiufrgs-4.3.1.tar.bz2
 Para instalar:
