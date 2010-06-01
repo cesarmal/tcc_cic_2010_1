@@ -5,7 +5,7 @@ Orientado por Raul Fernando Weber
 	Exploits: técnicas, detecção e prevenção
 				2010/1
 
-Para gerar o pdf, faça "make".
+Para gerar o pdf, faça "make clean; make".
 Será gerado "main.pdf".
 
 ################################################################################################
