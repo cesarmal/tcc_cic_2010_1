@@ -22,9 +22,161 @@
 
 
 	\section{Conceitos básicos}
-	Neste trabalho iremos tratar de \textsl{exploit}s na arquitetura x86 de 32 bits. Trata-se da arquitetura de computadores
-	pessoais mais difundida nos dias de hoje. Mas boa parte do estudo realizado pode ser aplicada
-	a praticamente qualquer outra arquitetura.
+		Neste trabalho iremos tratar de \textsl{exploit}s na arquitetura x86 de 32 bits. 
+		Trata-se da arquitetura de computadores
+		pessoais mais difundida nos dias de hoje. Mas boa parte do estudo realizado pode ser aplicada
+		a praticamente qualquer outra arquitetura.
+
+	\section{Memória Virtual}
+		Para facilitar o entendimento de questões discutidas nesse trabalho, é importante esclarecer
+		pontos básicos sobre uso do esquema de memória virtual na arquitetura x86.
+		Isso nos permitirá entender melhor as alternativas existentes para a implementações
+		do sistemas bem como as relações com as vulnerabilidades e \textsl{exploits}.
+		Primeiro repassamos as motivações e o funcionamento básico da memória virtual.
+		Entre suas vantagens, conforme \cite{Bovet2005}, encontramos:
+		\begin{itemize}
+			\item{É possível executar aplicações que necessitam mais memória que a disponível fisicamente}
+			\item{Processos podem compartilhar uma única imagem na memória de uma biblioteca}
+			\item{As aplicações podem ser realocadas na memória física em qualquer lugar}
+			\item{Um processo pode ser executado com apenas parte de seu código carregado em memória física}
+			\item{Cada processo tem a disposição seu próprio espaço de endereçamento como se fosse
+			a única aplicação no sistema} 
+		\end{itemize}
+		De forma geral, podemos que dizer que há um melhor uso dos recursos disponíveis e a abstração
+		criada pela virtualização pode diminuir a preocupação dos programadores sobre
+		como o processo é organizado na memória física.
+
+		
+		A figura \ref{fig:memoria_virtual} apresenta uma visão global do funcionamento da memória virtual.
+		Nela, é mostrado como um processo pode possuir regiões diferentes de memória mapeadas
+		arbitrariamente para memória física; nesse caso composta de memória RAM e de um disco de armazenamento.
+		\begin{figure}
+			\begin{center}
+				\includegraphics[width=0.35\textwidth]{Virtual_memory.jpg}
+				\caption{Esquema de memória virtual (retirada da Wikepedia)}
+				\label{fig:memoria_virtual}
+			\end{center}
+		\end{figure}
+		
+
+		\subsection{Como é usada na arquitetura x86}		
+			Na arquitetura x86, a virtualização da memória é implementada com segmentação e paginação.
+			Na segmentação, a memória é dividida em segmentos de tamanho variável; sendo o endereço
+			virtual um identificador de segmento e um \textsl{offset}. No caso da paginação,
+			a divisão da memória é feita em páginas de tamanho fixo e, analogamente, o endereço
+			virtual é composto de um identificador para a página e um \textsl{offset}.
+			Os dois modelos não são excludentes bem como podem ser usados independentemente.
+			Nesse caso, foi optado pela presença de ambos. Assim, é possível dividir 
+			a memória em segmentos que por sua vez podem ser particionados em diferentes páginas.
+			
+			
+			Chamamos de endereço lógico aquele acessado pela aplicação - que seria, portanto
+			o nível mais alto na virtualização. Já o endereço linear, é resultado do processamento
+			da segmentação quando é fornecido um endereço lógico.
+			Para produzir o endereço físico, ainda é necessário que a unidade de paginação
+			processe o endereço linear. A figura \ref{fig:x86_end_virtual_para_fisico} ilustra esse processo.
+
+			\begin{figure}
+				\begin{center}
+					\includegraphics[width=0.8\textwidth]{x86_end_virtual_para_fisico.jpg}
+					\caption{Processamento de endereço na arquitetura x86 - retirada de \cite{Bovet2005}}
+					\label{fig:x86_end_virtual_para_fisico}
+				\end{center}
+			\end{figure}
+			
+			
+			Assim, máquinas x86 possuem 2 níveis, segmentação e paginação na ordem, 
+			a serem tratados para que um endereço físico possa ser encontrado a partir de um endereço lógico. 
+			Cada um dos processos possui suas particularidades e implementa suas 
+			próprias proteções conforme passamos mais detalhes a seguir.
+		
+		
+		\subsection{Segmentação}
+			Para a segmentação, a memória é organizada em segmentos e cada um deles possui diferentes atributos.
+			Os principais segmentos são: o de código(mantido no registrador cs), o de dados(no registrador ds)
+			e o da pilha(no registrador ss). Para os fins desse trabalho, cabe destacar os seguintes atributos
+			de segmentos:
+			\begin{description}
+				\item[Base]
+					Endereço linear inicial do segmento.
+				\item[Limite]
+					Endereço linear final do segmento.
+				\item[Tipo]
+					Os tipos definem as propriedades de acesso como leitura, escrita e execução.
+				\item[DPL]
+					\textsl{Descriptor Privelege Level}. Define o privilégio mínimo da CPU para
+					que ele possa ser acessado. O máximo privilégio é identificado pelo valor 0;
+					o menor em 3. Normalmente o sistema operacional se reserva o DPL 0, enquanto
+					os demais processos ficam com 3.
+			\end{description}
+			Naturalmente, podem existir segmentos distintos para o sistema operacional e
+			para as aplicações do usuário. Assim, aqueles pertencentes ao sistema ficam
+			com DPL em zero, enquanto os demais ficam marcados como 3.
+
+
+		\subsection{Paginação}
+			Separando a memória em páginas de um tamanho fixo (normalmente 4Kb), 
+			a paginação opera criando um mapeamento
+			entre aquelas existentes na memória física e aquelas do espaço de endereçamento
+			das aplicações. Assim, endereços contíguos dentro do endereço linear são mapeados
+			para endereços contínuos dentro da página física.
+
+	
+			Através das tabelas de páginas, é realizado esse mapeamento. São estruturas de dados
+			mantidas pelo sistema operacional com o suporte do hardware. Elas mantém
+			os dados referentes às páginas. Devemos destacar as seguintes propriedades:
+			\begin{description}
+				\item[Leitura/Escrita]
+					Indica se a página possui permissão de leitra e/ou escrita.
+				\item[\textsl{User/Supervisor flag}]
+					De forma análoga ao DPL na segmentação, define o privilégio mínimo exigido
+					para o acesso.
+			\end{description}
+
+			
+			Ao ocorrer algum problema no acesso a alguma página, como falta de privilégios
+			ou mesmo porque uma página não está mapeada fisicamente, o sistema operacional
+			é chamado através de uma interrupção de hardware. Dessa forma, ele pode
+			tomar as medidas necessárias como: cancelar a aplicação que realizou um acesso
+			ilegítimo ou buscar fazer o mapeamento da página que falta à aplicação.
+			Com a cooperação do hardware e do sistema, fica possível implantar a memória
+			virtual com paginação.
+			
+
+		\subsection{Caso abordado: memória virtual no sistema Linux x86} 
+		\label{subsec:memoria_virtual_linux_x86}
+			Conforme veremos na seção \ref{subsec:linux_kernel_vuln}, a escolha no uso da
+			memória virtual no sistema Linux trouxe impactos sobre sua segurança.
+			Nesse sistema, o uso da segmentação é extremamente limitado.
+			A paginação foi escolhida em detrimento à segmentação - sendo a última
+			usada apenas por obrigatoriedade da arquitetura.
+			Os segmentos de dados e código para o sistema operacional e para as aplicações do
+			usuário são praticamente os mesmos. A tabela \ref{tab:descritores_segmentos_linux}
+			apresenta os principais segmentos.
+
+
+			Embora isso tenha vantagens em termos de desempenho, pois facilita a troca
+			de contexto entre modo usuário e modo do sistema bem como a troca de dados
+			entre ambos, há uma desvantagem de segurança.
+			\begin{table}
+				\begin{tabular}{|l|c|c|c|c|}
+					\hline
+						\textbf{Segmento} & \textbf{Base} & \textbf{Limite} & \textbf{Tipo} & \textbf{DPL}\\
+					\hline
+						Código do usuário & 0x00000000 & 0xfffff & Leitura & 3\\
+					\hline
+						Dados do usuário & 0x00000000 & 0xfffff & Escrita/Leitura &	3\\
+					\hline
+						Código do kernel & 0x00000000 & 0xfffff & Leitura &	0\\
+					\hline
+						Dados do kernel & 0x00000000 & 0xfffff & Escrita/Leitura &	0\\
+					\hline
+				\end{tabular}
+				\caption{Quatro segmentos principais no Linux com seus descritores}\label{tab:descritores_segmentos_linux}
+			\end{table}
+			Tanto o kernel as aplicações do usuário podem usar os mesmos endereços lógicos.
+			Certas restrições de segurança acabam recaindo, portanto, apenas para a paginação.
+			
 
 	\section{Gerência de memória}
 	O controle da memória é um ponto crítico. Falhas nele acabam resultando em vulnerabilidades 
