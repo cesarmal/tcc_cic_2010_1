@@ -332,6 +332,10 @@ FUNCTION {format.names}
 	{
 		duplicate$ duplicate$ i "{ll}{~jj}" format.name$
 		duplicate$ "others" =
+		n #3 >
+		i #2 =
+		and
+		or
 		{
 			pop$ pop$ names " et~al." *
 			n 'i :=
@@ -916,7 +920,7 @@ FUNCTION {format.complementary.data.with.page.range}
 %
 FUNCTION {format.proceedings.booktitle}
 {
-	process.proceedings.booktitle "" swap$ add.year add.address add.to.item
+	process.proceedings.booktitle "" swap$ add.address add.to.item
 	swap$ "{\ldots}" * emphasize " " swap$ * *
 }
 
