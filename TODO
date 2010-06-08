@@ -14,10 +14,11 @@ Como adicionar livro com vários autores usando jabref?
 
 Incluir lista de termos:
 
-Colocar labels nas seções para fazer referência cruzada.
-
-Citação de página web: como fazer? Jabref não a cria corretamente.
-
-Adicionar seção sobre cadastro de vulnerabilidades no CVE.
-
 Adicionar definição de memcpy usada em exemplo.
+
+Colocar a primeira referência a problema de NULL pointer
+encontrada em .
+
+Como citar um commit do kernel do Linux?
+
+Citar zero-day vulnerabilities na parte de classificação.
