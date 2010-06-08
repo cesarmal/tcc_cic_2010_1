@@ -2,15 +2,124 @@
 \chapter{Classificação de exploits}
 \label{chap:classificacao}
 
-\section{Non Control Data Attacks}
-Preservam a integridade do controle de fluxo do processo.
+	A classificação de vulnerabilidades representa enorme desafio.
+	Nos dias de hoje, não existe nenhum padrão aceito globalmente para essa tarefa.
+	Ainda assim, já houve vários avanços na área. 
+	Existem padrões para enumerar e catalogar vulnerabilidades, bem como propostas
+	que podem criar bases para uma classificação que venha a ser aceita pela comunidade.
+	Métricas, relativas	à gravidade e ao impacto, também estão disponíveis
+	e são empregadas no auxílio às instituições nas tomadas	de decisões.
 
-\section{Control Data Attacks}
-	Control-Data definido em "Minos: Control Data Attack Prevention Orthogonal to Memory Model"
-	"Control data is any data which is loaded into the program counter on control flow transfer, 
-	or any data used to calculate such data"
+	
+	No trabalho de Seacord e Householder, \cite{Seacord2005}, temos os fatores que motivam a
+	busca pela organização das vulnerabilidades em classes:
+	\begin{itemize}
+		\item{O entendimento das ameaças que elas representam.}
+		\item{Correlacionamento de incidentes, de \textsl{exploits} e de artefatos.}
+		\item{Avaliação da efetividade das ações de defesa.}
+		\item{Descoberta de tendências de vulnerabilidades.}
+	\end{itemize}
 
-\section{Control Data Vs Non Control Data}
+	
+	Vemos, portanto, que a taxonomia\footnote{Ciência da classificação.} das vulnerabilidades
+	pode trazer uma série de benefícios para seu entendimento, tratamento e prevenção.
+	Nesse capítulo, nosso intuito é abordar a dificuldade nesse processo e apresentar
+	os avanços já obtidos nesse sentido.  
 
-\section{Classificação quanto às proteções}
+
+	\section{A dificuldade em classificar; estágio já alcançado: enumeração}
+		Antes de entrarmos no mérito das vulnerabilidades, é preciso definir
+		com precisão dois termos que utilizaremos por todo o capítulo: classificar e enumerar.
+		Como veremos, a taxonomia é mais custosa que a enumeração.
+
+		\subsection{Classificar}
+			Como podemos encontrar em \cite{Holanda1975}, classificar implica "distribuir em classes e/ou grupos
+			segundo um sistema". Logo, para a classificação, é preciso haver uma metodologia que possa
+			separar os itens em estudo em diferentes grupos. A ciência que estuda esse processo
+			é chamada taxonomia. Ela é guiada, conforme \cite{Gregio2005_1}, pelos princípios taxonômicos.
+			São eles:
+			\begin{description}
+				\item[Exclusão mútua]
+					Um item não podem ser categorizado simultaneamente em dois grupos.
+				\item[Exaustividade]
+					Os grupos, unidos, incluem todas as possibilidades.
+				\item[Repetibilidade]
+					Diferentes pessoas extraindo a mesma característica do objeto devem concordar com
+					o valor observado.
+				\item[Aceitabilidade]
+					Os critérios devem ser lógicos e intuitivos para serem aceitos pela comunidade.
+				\item[Utilidade]
+					A classificação pode ser utilizada na obtenção de conhecimento na área de pesquisa.
+			\end{description}
+
+			
+			Vemos que os critérios para a taxonomia são exigentes e pressupõem uma metodologia
+			cuidadosamente gerada para atendê-los. 
+
+		\subsection{Enumerar}
+			A enumeração é um processo semelhante a 
+			"indicar por números; relacionar metodicamente" - como encontramos
+			em \cite{Holanda1975}.
+			Trata-se, portanto, de algo muito mais simples que a classificação.
+			Mesmo sendo mais simples, é extremamente importante pois permite
+			que os itens enumerados sejam facilmente apontados e diferenciados entre si.
+			
+			
+			Sem um procedimento de enumeração dos objetos de estudo, adotado de comum acordo,
+			não é possível que duas partes se comuniquem sem risco de cometerem enganos. 
+			Quem garante que estão tratando exatamente da mesma coisa naquele momento?
+			Logo a enumeração é essencial para o devido entendimento sobre os objetos
+			de estudo.
+
+		\subsection{Da enumeração à classificação}
+			No trabalho de Mann, \cite{Mann1999}, há um excelente paralelo entre a
+			questão abordada nesse capítulo e o advento da tabela 
+			periódica\footnote{Dispõe sistematicamente os elementos de acordo com suas propriedades permitindo
+			uma análise multidimensional.} na Química. 
+			A organização dos elementos da forma como conhecemos hoje na tabela periódica
+			foi um processo longo que culminou com as ideias de Dimitri Mendeleev.
+			Outros químicos que o precederam foram responsáveis pela identificação e
+			listagem dos elementos. Isso possibilitou um melhor estudo e uma maior
+			troca de informação precisa entre os pesquisadores.
+
+
+			Segundo Mann, a tabela periódica só pode ser efetivamente criada graças
+			aos esforços daqueles que enumeraram os elementos de forma mais simples
+			antes de Mendeleev. O trabalho deles permitiu a interoperabilidade
+			necessária para o surgimento da tabela periódica.
+			Da mesma forma, nos anos antecedentes a 2000, a comunidade que estudava
+			e acompanhava as vulnerabilidades estava num patamar semelhante àqueles
+			que precederam Mendeleev. Ou seja, sequer havia uma enumeração mais
+			amplamente aceita e reconhecida das vulnerabilidades que permitisse
+			avanços suficientes para uma taxonomia.
+
+			
+			Citamos o ano de 2000 como parâmetro, pois nessa época, 1999, surgiria um projeto
+			que se tornaria referência para a criação de uma padronização da enumeração
+			de vulnerabilidades. Não seria ainda um evento comparável à criação da
+			tabela periódica para Química (pois não trouxe a taxonomia) 
+			mas certamente lançaria as bases para
+			a interoperabilidade exigida para estudos mais aprofundados na área.
+			Estamos falando da criação do 
+			CVE(Common Vulnerabilities and Exposures)\footnote{http://cve.mitre.org}\footnote{Na época
+			de sua criação era originalmente conhecido por Common Vulnerabilities Enumeration - vide
+			\cite{Meunier2006} pg. 9.}
+			pelo MITRE. A seção \ref{sec:cve} traz mais detalhes.
+
+
+			Podemos dizer, portanto, que atualmente, embora não tenhamos uma taxonomia
+			amplamente aceita pela comunidade, já foi atingido o estágio de enumeração.
+			Projetos como o CVE podem ser considerados como marcos dessa etapa.
+			A seguir, iremos abordar em mais detalhes o surgimento e o funcionamento dele.
+			Isso nos possibilitará compreender melhor a complexidade da classificação
+			das vulnerabilidades bem como irá facilitar o entendimento dos capítulos
+			seguintes que abordam \textsl{exploits}.
+			
+
+	\section{CVE: surgimento e funcionamento}
+	\label{sec:cve}
+		
+	\section{Propostas taxonômicas}
+
+	\section{Métricas para vulnerabilidades}
 
