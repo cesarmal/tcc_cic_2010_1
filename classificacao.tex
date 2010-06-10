@@ -1,5 +1,5 @@
 
-\chapter{Classificação de exploits}
+\chapter{Classificação de vulnerabilidades}
 \label{chap:classificacao}
 
 	A classificação de vulnerabilidades representa enorme desafio.
@@ -33,6 +33,7 @@
 		Como veremos, a taxonomia é mais custosa que a enumeração.
 
 		\subsection{Classificar}
+			\label{subsec:classificar}
 			Como podemos encontrar em \cite{Holanda1975}, classificar implica "distribuir em classes e/ou grupos
 			segundo um sistema". Logo, para a classificação, é preciso haver uma metodologia que possa
 			separar os itens em estudo em diferentes grupos. A ciência que estuda esse processo
@@ -58,7 +59,7 @@
 
 		\subsection{Enumerar}
 			A enumeração é um processo semelhante a 
-			"indicar por números; relacionar metodicamente" - como encontramos
+			"indicar por números; relacionar metodicamente"; como encontramos
 			em \cite{Holanda1975}.
 			Trata-se, portanto, de algo muito mais simples que a classificação.
 			Mesmo sendo mais simples, é extremamente importante pois permite
@@ -116,10 +117,129 @@
 			seguintes que abordam \textsl{exploits}.
 			
 
-	\section{CVE: surgimento e funcionamento}
+	\section{CVE}
 	\label{sec:cve}
+
+		\subsection{Surgimento e objetivos}
+			Para deixar mais nítida a dificuldade de interoperabilidade
+			das organizações no que se refere a ameaças de segurança na época
+			que antecede o CVE, segue abaixo uma tabela, extraída de \cite{Martin2001}.
+			A tabela \ref{tab:torre_babel}, mostra
+			como diferentes organizações se referiam à mesma vulnerabilidade
+			em 1998. Trata-se de um verdadeira Torre de Babel.
+
+			\begin{table}
+				\begin{tabular}{|l|c|c|c|c|}
+					\hline
+						\textbf{Organização} & \textbf{Como se referia à vulnerabilidade}\\
+					\hline
+						CERT\footnotemark[1] & CA-96.06.cgi\_example\_code\\
+					\hline
+						Cisco Systems\footnotemark[2] & http - cgi-phf\\
+					\hline
+						DARPA & 0x00000025 = http PHF attack\\	
+					\hline
+						IBM ERS & ERS-SVA-E01-1996:002.1\\	
+					\hline
+						Security Focus\footnotemark[3] & \#629 - phf Remote Command Execution Vulnerability\\	
+					\hline
+				\end{tabular}
+				\footnotetext[1]{site}
+				\footnotetext[2]{site}
+				\footnotetext[3]{site}
+				\caption{Uma vulnerabilidade: diversos nomes e nenhum entendimento}\label{tab:torre_babel}
+			\end{table}
+			
+
+			O CVE, como dito anteriormente, surge em 1999 e seu maior objetivo, como podemos
+			ler em sua FAQ, \cite{CVE2010}, é tornar mais fácil
+			o compartilhamento de informações sobre vulnerabilidades utilizando uma enumeração comum.
+			Essa enumeração é realizada através da manutenção de uma lista na qual, conforme
+			encontramos em \cite{Santos2004}, valem os seguintes princípios:
+			\begin{itemize}
+				\item{Atribuição de um nome padronizado e único a cada vulnerabilidade.}
+				\item{Independência das diferentes perspectivas em que a vulnerabilidade ocorre.}
+				\item{Abertura total voltada ao compartilhamento pleno das informações.}
+			\end{itemize}
+
+
+			Segundo a própria organização, vide \cite{CVE2010}, o CVE não possui um objetivo 
+			inicial de conter alguma espécie de taxonomia. Essa é considerada uma área de pesquisa
+			ainda em desenvolvimento. É esperado que, com o auxílio prestado pela
+			catalogação das vulnerabilidades já constitua um importante passo para que
+			isso ocorra.
+
+			\begin{figure}
+				\begin{center}
+					\includegraphics[width=0.65\textwidth]{vulnerabilidades_CVE.jpg}
+					\caption{Vulnerabilidades registradas no CVE ao longo do tempo - retirada 
+							de \cite{Florian2009}}
+					\label{fig:vulnerabilidades_CVE}
+				\end{center}
+			\end{figure}
+
+			
+			Na figura \ref{fig:vulnerabilidades_CVE}, podemos visualizar um histórico
+			da quantidade de vulnerabilidades adicionadas. Nos últimos anos podemos
+			perceber que os incidentes registrados ficam na média de 7000.
+			Isso mostra relevância que o projeto do CVE alcançou.
+			
+			 
+		
+		\subsection{Funcionamento}
+			O CVE é formado por uma junta de especialistas em segurança dos meios acadêmico, comercial e
+			governamental. Eles são responsáveis por analisar e definir o que será feito dos reports passados
+			pela comunidade - se eles devem ou não se integrar àqueles já pertencentes à lista.
+			Cabe a eles definir nome, descrição e referências para cada nova ameaça.
+
+
+			Esse processo inicia quando uma vulnerabilidade é reportada.
+			Ela assume um CAN(Candidate Number), número de candidata.
+			Até que ela seja adicionada à lista, ele permanece com um CAN que
+			a identificará. Apenas após o devido estudo e aprovação do caso pela junta
+			responsável, é que ela assume um identificador CVE.
+
+			
+			Os identificadores CVE são definidos conforme o padrão: CVE-2010-0021.
+			Onde, separados por '-', há 3 partes. A primeira é fixa: CVE.
+			A segunda refere-se ao ano de surgimento; enquanto a terceira
+			indica o número sequencial daquela vulnerabilidade entre todas
+			aquelas que foram adicionadas naquele ano. Logo, no exemplo fornecido,
+			essa seria a vigésima primeira de 2010.
+		
+			
+			Uma vez integrada, a vulnerabilidade passa a estar publicamente disponível.
+			Essa abertura pode servir de auxílio aos atacantes - pois informações
+			sobre possíveis furos de segurança são sempre bem vindas a eles.
+			Porém, conforme podemos verificar na FAQ do CVE, \cite{CVE2010}, há uma série
+			de motivos pelos quais a disponibilidade desses dados supera o risco
+			oferecido pela exposição. São eles:
+			\begin{itemize}
+				\item{O CVE está restrito a publicar vulnerabilidades já conhecidas.}
+				\item{Por diversas razões, a comunidade de segurança de informação
+					sofre mais para compartilhar dados sobre as ameças
+					que os atacantes.}
+				\item{É muito mais custo a uma organização proteger toda sua rede
+					contra as ameças que a um atacante descobrir e explorar uma delas para
+					comprometer alguma das redes.}
+			\end{itemize}
+			
+			
+
+		
+		
 		
 	\section{Propostas taxonômicas}
+		Como foi referenciado anteriormente, não há padrão amplamente aceito
+		para a taxonomia de vulnerabilidades.
+		Mesmo assim, há diversas propostas que buscam resolver essa questão em aberto.
+		
+		
+		O trabalho de \cite{Gregio2005} faz um levantamento amplo de algumas
+		dessas alternativas. Mas, como veremos, nenhuma delas atinge os objetivos
+		de uma taxonomia plena - apresentados na seção \ref{subsec:classificar}.
+		Assim, buscaremos discutir as ideias para as metodologias
+		de classificação com o intuito de apontar suas vantagens e fraquezas.
 
 	\section{Métricas para vulnerabilidades}
 
