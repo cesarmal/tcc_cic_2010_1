@@ -129,7 +129,7 @@
 			em 1998. Trata-se de um verdadeira Torre de Babel.
 
 			\begin{table}
-				\begin{tabular}{|l|c|c|c|c|}
+				\begin{tabular}{|l|c|c|}
 					\hline
 						\textbf{Organização} & \textbf{Como se referia à vulnerabilidade}\\
 					\hline
@@ -225,8 +225,6 @@
 			\end{itemize}
 			
 			
-
-		
 		
 		
 	\section{Propostas taxonômicas}
@@ -241,38 +239,200 @@
 		Assim, buscaremos discutir as ideias para as metodologias
 		de classificação com o intuito de apontar suas vantagens e fraquezas.
 
-	\section{Métricas para vulnerabilidades}
+	\section{Métricas para vulnerabilidades: CVSS}
 		Comparar objetivamente vulnerabilidades de acordo com sua criticidade é
 		algo muito útil para as organizações.
 		Isso possibilita que os gestores mensurem o grau de urgência com que devem
 		ser tratadas as ameaças. Podemos considerar esse procedimento
-		como um tipo rudimentar de classificação.
+		como um tipo rudimentar de classificação. 
 
+		\subsection{Surgimento do CVSS}
+			Para essa finalidade existe uma alternativa relativamente recente, o CVSS
+			(Common Vulnerability Scoring System), criado em 2005. 
+			Trata-se de um \textsl{framework} aberto para atribuição de escore a vulnerabilidades.
+			Ele oferece as seguintes vantagens, encontradas em \cite{Mell2007} - pg. 3:
+			\begin{description}
+				\item[Padronização de escore de vulnerabilidades]{Quando uma organização normaliza
+				os escores de vulnerabilidades em todas suas plataformas de hardware e software,
+				ela pode instituir uma política comum de gerenciamento das ameaças.}
+				\item[\textsl{Framework} aberto]{A abertura permite que os usuários tenham
+				livre acesso para compreenderem as razões das vulnerabilidades assumirem
+				esse ou aquele escore.}
+				\item[Priorização de riscos]{Quando o escore ambiental é calculado, a vulnerabilidade
+				passa a possuir contexto. De tal forma que o risco real que ela representa
+				para a organização possa ser mensurado.}
+			\end{description}
+
+			
+			A organização responsável pelo CVSS é a 
+			\textsl{Forum of Incident Response and Security Teams} (FIRST)\footnote{www.first.org}.
+			Além do FIRST, as seguintes organizações também cooperaram para seu surgimento:
+			\begin{itemize}	
+				\item{CERT/CC}
+				\item{Cisco}
+				\item{DHS/MITRE}
+				\item{eBay}
+				\item{IBM Internet Security Systems}
+				\item{Microsoft}
+				\item{Qualys}
+				\item{Symantec}
+			\end{itemize}	
+			Sua primeira versão data de 2005. Desde 2007, já se encontra na segunda versão;
+			tratada em \cite{Mell2007}. Nesse trabalho, abordaremos	apenas a versão atual do CVSS.
+
+		\subsection{As métricas usadas}
+		\label{subsec:metricas_cvss}
+			Para o cálculo do escore de uma vulnerabilidade, o CVSS, na sua versão 2, possui diversas métricas
+			que são divididas em 3 grupos principais. 
+			em \cite{Mell2007}\footnote{Termos em inglês traduzidos livremente pelo autor.}:
+			\begin{description}
+				\item[Métricas básicas]{Representam as características fundamentais da vulnerabilidade
+				e são constantes com relação ao tempo e ao ambiente.}
+				\item[Métricas temporais]{Mudam com o transcorrer do tempo, mas não são suscetíveis
+				a fatores ambientais.}
+				\item[Métricas ambientais]{Estão relacionadas unicamente ao ambiente em que a vulnerabilidade
+				é analisada. Por isso, são absolutamente dependentes das particularidades de cada caso.}
+			\end{description}	
+			Na tabela \ref{tab:grupos_cvss}, são mostradas as métricas usadas subdivididas nos seus respectivos
+			grupos. 
+
+			\begin{table}
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\multicolumn{3}{|c|}{ \textbf{CVSS} } \\
+					\hline
+					\textbf{Métricas básicas} & \textbf{Métricas Temporais} & \textbf{Métricas Ambientais} \\
+					\hline
+					Vetor de acesso & Facilidade de exploração & Dano colateral potencial \\
+					Complexidade de acesso & Confiabilidade no \textsl{report} & Abundância de alvos\\
+					Necessidade de autenticação & Nível de remediação & Importância da confidencialidade \\
+					Impacto na confidencialidade & & Importância da integridade\\
+					Impacto na integridade & & Importância da disponibilidade \\
+					Impacto na disponibilidade & &  \\
+					\hline
+				\end{tabular}
+				\caption{Métricas CVSS por grupo}\label{tab:grupos_cvss}
+			\end{table}
+			
+			
+			A seguir, faremos breve explicação de cada uma das métricas dos três grupos - vide
+			tabela \ref{tab:grupos_cvss}.
+			Para o grupo \textbf{básico}, existem seis critérios. São eles:
+			\begin{description}
+				\item[Vetor de acesso]{Diz respeito ao nível de acesso necessário para explorar
+					a vulnerabilidade. Pode assumir três valores: 
+					\textbf{Local}(exige acesso físico ou uma conta \textsl{shell}), 
+					\textbf{Rede adjacente}(é preciso ter acesso à rede local)
+					ou \textbf{Rede}(indica a chamada vulnerabilidade \textsl{remota} - pode ser disparada
+					de qualquer ponto da Internet).}
+				\item[Complexidade de acesso]{Indica a complexidade a ser enfrentada
+					pelo atacante para que ele, uma vez que tenha obtido acesso ao sistema alvo,
+					possa explorar a vulnerabilidade. Assume um dos valores \textbf{alto, médio ou baixo}.
+					A complexidade é considerada alta, por exemplo, se o ataque exige alguma
+					técnica de engenharia social mais sofisticada ou se existe uma condição de corrida
+					com janela muito exígua que deve ser vencida.}
+				\item[Necessidade de autenticação]{Mede a quantidade de vezes que o atacante
+					é obrigado a se autenticar durante o ataque - mesmo que seja usada a mesma credencial.
+					É um dos valores: \textbf{nenhuma, uma, várias}}.
+				\item[Impacto na confidencialidade]{Mede o impacto causado
+					na abertura de dados confidenciais gerados pelo ataque.
+					Se nenhuma informação, em princípio protegida, é comprometida a medida
+					assume valor \textbf{nenhum}. Havendo acesso a alguma informação, é considerado
+					\textbf{parcial}. É dito \textbf{completo} caso o atacante tenha total acesso
+					de leitura aos dados confidenciais.}
+				\item[Impacto na integridade]{Avalia a possibilidade que o atacante
+					possui de alterar os dados quando o ataque é bem sucedido.
+					Se não é mais possível confiar na integridade dos dados após o ataque,
+					pois qualquer arquivo pode ter sido modificado, é considerada \textbf{completa}.
+					Não havendo possibilidade de alteração, assume o valor \textbf{nenhuma}.
+					É denominada \textbf{parcial} quando apenas parte dos dados
+					pode ter sido comprometidos.}
+				\item[Impacto na disponibilidade]{Indica o quanto a disponibilidade do sistema
+					pode ser afetada pelo ataque. É dita \textbf{completa} caso o sistema
+					possa ser totalmente desligado ou inutilizado pelo atacante. Assume o valor
+					\textbf{nenhuma} quando não pode haver alteração na disponibilidade e
+					\textbf{parcial} se o serviço ainda puder estar disponível mas não plenamente.}
+			\end{description}
+			
+
+			As métricas do grupo \textbf{temporal} são opcionais. Ou seja, podem ser
+			desconsideradas no cálculo do escore conforme a vontade nos analistas.
+			Por isso, cada uma delas pode assumir o valor \textbf{não definido} indicando
+			que ela não deve participar do escore.
+			São 3 os critérios que são suscetíveis a alterações com o passar do tempo:
+			\begin{description}
+				\item[Facilidade de exploração]{Mede o estado atual das técnicas
+					e do código disponível para exploração da vulnerabilidade.
+					Seus valores são, em ordem crescente de facilidade: 
+					\textbf{não comprovada},  \textbf{prova de conceito},
+					\textbf{funcional} e \textbf{alta}
+					(\textbf{não definida} se deve ser desconsiderada).
+					O primeiro indica que um \textsl{exploit} é meramente teórico
+					e não há código disponível que comprove como explorar a falha.
+					Havendo código facilmente acessível de \textsl{exploit}
+					ou mesmo se operações manuais são suficientes, estamos
+					diante de alta facilidade de exploração.}
+				\item[Confiabilidade no \textsl{report}]{.}
+				\item[Nível de remediação]{Determina o quão longe se está de uma medida
+					definitiva para estancamento da vulnerabilidade.
+					Logo que o problema surge, assume o valor \textbf{indisponível}.
+					Se houver alguma forma, não oficial, de mitigar a vulnerabilidade,
+					é dito que a remediação está no estágio de 	\textbf{\textsl{workaround}}.
+					Se existe alguma medida oficial, mas ainda não definitiva, 
+					seu valor é \textbf{conserto temporário}. O nível é máximo,
+					portanto assumindo o escore mínimo,
+					\textbf{conserto definitivo}, caso exista uma remediação de caráter
+					oficial definitiva.}
+			\end{description}
+
+
+
+			Os fatores relativos à influência do ambiente, são medidos na \textbf{métricas
+			ambientais}. Cada organização pode sofrer diferentemente o impacto de uma
+			vulnerabilidade dada a heterogeneidade com que podem se organizar em termos
+			do software e hardware utilizados para desempenhar suas funções.
+			Exemplificando, caso uma empresa preste algum tipo de serviço de \textsl{backup} de
+			dados, a integridade e a confidencialidade da informação que ela mantém
+			possuem importância máxima. Em contrapartida, se a atividade desempenhada pela
+			empresa estiver relacionada à hospedagem de projetos de código fonte aberto,
+			a disponibilidade assume muito maior importância que a confidencialidade.
+			Abaixo, são explicados os 5 critérios que compõem a métrica temporal:
+			\begin{description}
+				\item[Dano colateral potencial]{Mede o estado atual das técnicas}
+				\item[Abundância de alvos]{Avalia a possibilidade que o atacante.}
+				\item[Importância da confidencialidade]{Mede o impacto causado.}
+				\item[Importância da disponibilidade]{Indica o quanto a disponibilidade do sistema.}
+				\item[Importância da disponibilidade]{Indica o quanto a disponibilidade do sistema.}
+			\end{description}
 		
-		Para essa finalidade existe uma alternativa relativamente recente, o CVSS
-		(Common Vulnerability Scoring System), criado em 2005.
 
-		\subsection{CVSS}
-			O CVSS é um \textsl{framework} aberto para atribuição de escore a vulnerabilidades.
+		\subsection{Cálculo do escore}
+			E a figura \ref{fig:cvss_metricas_equacoes} apresenta uma visão geral da composição
+			dos grupos para o cálculo do escore final. Conforme dito anteriormente,
+			os grupos temporal e ambiental são opcionais e, portanto, podem
+			ser desconsiderados. Faremos então, breve descrição de como é aferido
+			o escore de uma vulnerabilidade uma vez que tenham sido atribuídos
+			valores válidos a cada uma das métricas.
+
+
+			Passos necessários para o cálculo:
+			\begin{enumerate}
+				\item{Para cada um dos critérios descritos na Seção \ref{subsec:metricas_cvss},
+					atribuir um valor válido.}
+			\end{enumerate}
 			
-			Explicar objetivos.
 
-			Apresentar breve histórico.
+			\begin{figure}
+				\begin{center}
+					\includegraphics[width=0.85\textwidth]{cvss_metricas_equacoes.jpg}
+					\caption{Aplicação das métricas e equações do CVSS - Fonte: \cite{Mell2007}}
+					\label{fig:cvss_metricas_equacoes}
+				\end{center}
+			\end{figure}
 
-			Mostrar os critérios usados.
-			
-			Como calcular.
 
-			Exemplos.
 
+		\subsection{Exemplificando em vulnerabilidades reais}
 			Quem já utiliza o CVSS (como a Oracle).
-		\begin{figure}
-			\begin{center}
-				\includegraphics[width=0.85\textwidth]{cvss_metricas_equacoes.jpg}
-				\caption{Aplicação das métricas e equações do CVSS - Fonte: \cite{Mell2007}}
-				\label{fig:cvss_metricas_equacoes}
-			\end{center}
-		\end{figure}
-
 			
 
