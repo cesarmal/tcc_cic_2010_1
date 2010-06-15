@@ -365,14 +365,22 @@
 					e do código disponível para exploração da vulnerabilidade.
 					Seus valores são, em ordem crescente de facilidade: 
 					\textbf{não comprovada},  \textbf{prova de conceito},
-					\textbf{funcional} e \textbf{alta}
-					(\textbf{não definida} se deve ser desconsiderada).
+					\textbf{funcional} e \textbf{alta}.
 					O primeiro indica que um \textsl{exploit} é meramente teórico
 					e não há código disponível que comprove como explorar a falha.
 					Havendo código facilmente acessível de \textsl{exploit}
 					ou mesmo se operações manuais são suficientes, estamos
 					diante de alta facilidade de exploração.}
-				\item[Confiabilidade no \textsl{report}]{.}
+				\item[Confiabilidade no \textsl{report}]{
+					Mede o grau de confiança na existência da vulnerabilidade
+					bem como a credibilidade dos detalhes técnicos fornecidos
+					quando ela foi reportada. Seus possíveis valores são:
+					\textbf{não confirmada}(quando há apenas um rumor de uma origem
+					sem credibilidade), \textbf{não corroborada}(há fontes não oficiais
+					com possíveis incoerência em seus \textsl{reports}) e \textbf{confirmada}(
+					o autor ou o fabricante admitem o problema ou ele já é amplamente
+					conhecido existindo até \textsl{exploits} facilmente encontrados).
+					}
 				\item[Nível de remediação]{Determina o quão longe se está de uma medida
 					definitiva para estancamento da vulnerabilidade.
 					Logo que o problema surge, assume o valor \textbf{indisponível}.
@@ -396,29 +404,41 @@
 			possuem importância máxima. Em contrapartida, se a atividade desempenhada pela
 			empresa estiver relacionada à hospedagem de projetos de código fonte aberto,
 			a disponibilidade assume muito maior importância que a confidencialidade.
+			Da mesma forma como os critérios temporais, eles podem assumir o valor não definido;
+			indicando que ele não é utilizado no cálculo do escore final.
 			Abaixo, são explicados os 5 critérios que compõem a métrica temporal:
 			\begin{description}
-				\item[Dano colateral potencial]{Mede o estado atual das técnicas}
-				\item[Abundância de alvos]{Avalia a possibilidade que o atacante.}
-				\item[Importância da confidencialidade]{Mede o impacto causado.}
-				\item[Importância da disponibilidade]{Indica o quanto a disponibilidade do sistema.}
-				\item[Importância da disponibilidade]{Indica o quanto a disponibilidade do sistema.}
+				\item[Dano colateral potencial]{
+					Mede o potencial do estrago que a vulnerabilidade pode causar à organização.
+					Podem ser danos patrimoniais, pessoais ou relativos a ganhos financeiros.
+					Assume os valores(do menor para o maior dano potencial):
+					\textbf{nenhum}, \textbf{baixo}, \textbf{baixo-médio}, \textbf{médio-alto} e
+					\textbf{alto}}.
+				\item[Abundância de alvos]{Mensura a proporção dos possíveis alvos
+					sobre o contingente de sistemas da organização.
+					Pode ser \textbf{nenhum}, \textbf{baixo}(1 a 25\%), 
+					\textbf{médio}(26 a 75\%) e \textbf{alto}(76 a 100\%)
+					.}
+				\item[Importância da confidencialidade]{Indica a relevância da
+					confidencialidade dos dados mantidos pela empresa. Assume os valores
+					\textbf{baixo}, \textbf{médio} e \textbf{alto}.}
+				\item[Importância da integridade]{Análogo à importância da confidencialidade.}
+				\item[Importância da disponibilidade]{Análogo à importância da confidencialidade.}
 			\end{description}
 		
 
 		\subsection{Cálculo do escore}
-			E a figura \ref{fig:cvss_metricas_equacoes} apresenta uma visão geral da composição
-			dos grupos para o cálculo do escore final. Conforme dito anteriormente,
-			os grupos temporal e ambiental são opcionais e, portanto, podem
-			ser desconsiderados. Faremos então, breve descrição de como é aferido
-			o escore de uma vulnerabilidade uma vez que tenham sido atribuídos
-			valores válidos a cada uma das métricas.
-
-
-			Passos necessários para o cálculo:
+			Tendo sido apresentadas as métricas, faremos breve explicação
+			do funcionamento do cálculo do escore para uma vulnerabilidade.
+			A figura \ref{fig:cvss_metricas_equacoes} apresenta uma visão geral desse processo. 
+			Passos necessários:
 			\begin{enumerate}
 				\item{Para cada um dos critérios descritos na Seção \ref{subsec:metricas_cvss},
 					atribuir um valor válido.}
+				\item{Consultar as tabelas para definir um valor numérico para cada métrica.}
+				\item{Fazer o cálculo do escore básico usando sua respectiva equação.}
+				\item{Fazer o cálculo do escore temporal usando sua respectiva equação e o escore básico.}
+				\item{Calcular o do escore final usando sua respectiva equação e o escore temporal.}
 			\end{enumerate}
 			
 
@@ -433,6 +453,13 @@
 
 
 		\subsection{Exemplificando em vulnerabilidades reais}
-			Quem já utiliza o CVSS (como a Oracle).
+			Para deixar mais claro a aplicabilidade do CVSS, iremos apresentar o
+			cálculo do escore de duas vulnerabilidades, que são abordadas pelo trabalho
+			na Seção \ref{subsec:linux_kernel_vuln}.
+			São elas: CVE-2009-2692 e CVE-2009-3547.
+
+
+			Os escores foram obtidos no site do NIST.
+			http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2009-2692
 			
 
