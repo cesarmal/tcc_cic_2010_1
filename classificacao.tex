@@ -14,10 +14,10 @@
 	No trabalho de Seacord e Householder, \cite{Seacord2005}, temos os fatores que motivam a
 	busca pela organização das vulnerabilidades em classes:
 	\begin{itemize}
-		\item{O entendimento das ameaças que elas representam.}
-		\item{Correlacionamento de incidentes, de \textsl{exploits} e de artefatos.}
-		\item{Avaliação da efetividade das ações de defesa.}
-		\item{Descoberta de tendências de vulnerabilidades.}
+		\item{O entendimento das ameaças que elas representam;}
+		\item{Correlacionamento de incidentes, de \textsl{exploits} e de artefatos;}
+		\item{Avaliação da efetividade das ações de defesa;}
+		\item{Descoberta de tendências de vulnerabilidades;}
 	\end{itemize}
 
 	
@@ -123,9 +123,8 @@
 		\subsection{Surgimento e objetivos}
 			Para deixar mais nítida a dificuldade de interoperabilidade
 			das organizações no que se refere a ameaças de segurança na época
-			que antecede o CVE, segue abaixo uma tabela, extraída de \cite{Martin2001}.
-			A tabela \ref{tab:torre_babel}, mostra
-			como diferentes organizações se referiam à mesma vulnerabilidade
+			que antecede o CVE, temos a tabela \ref{tab:torre_babel}, extraída de \cite{Martin2001}.
+			Ela	mostra como diferentes organizações se referiam à mesma vulnerabilidade
 			em 1998. Trata-se de um verdadeira Torre de Babel.
 
 			\begin{table}
@@ -224,27 +223,144 @@
 					comprometer alguma das redes.}
 			\end{itemize}
 			
-			
-		
 		
 	\section{Propostas taxonômicas}
-		Como foi referenciado anteriormente, não há padrão amplamente aceito
-		para a taxonomia de vulnerabilidades.
-		Mesmo assim, há diversas propostas que buscam resolver essa questão em aberto.
+		\label{sec:prop_taxonomicas}
+		Nessa Seção, apresentaremos taxonomias para vulnerabilidades e um projeto, análogo ao CVE,
+		que reúne esforços para a padronização da classificação: o CWE.
+		Primeiramente, faremos um breve histórico das propostas já criadas com esse fim.
+		A seguir, apresentaremos algumas das classificações que consideramos de maior relevância
+		e, por fim, trataremos do projeto CWE - que assume importante papel no contexto atual
+		na catalogação dos tipos de vulnerabilidades existentes.
+
+		\subsection{Histórico das propostas}
+		\label{subsec:historico_prop_taxonomicas}
+			Em \cite{Gregio2005}, encontramos um levantamento das 
+			dessas alternativas. Mas, como veremos, nenhuma delas atinge os objetivos
+			de uma taxonomia plena - apresentados na seção \ref{subsec:classificar}.
+			Assim, buscaremos discutir as ideias para as metodologias
+			de classificação com o intuito de apontar suas vantagens e fraquezas.
+
+			Em 1976, surge o primeiro estudo, chamado \textsl{Research Into Secure Operating Systems}(RISOS).
+			Ele objetivava auxiliar na compreensão das falhas encontradas nos sistemas operacionais
+			como MUTICS, GECOS, IBM OS. Foram propostas 7 classes, pág. 328 de \cite{Gregio2005}:
+			\begin{itemize}
+				\item{Validação incompleta de parâmetros;}
+				\item{Validação inconsistente de parâmetros;}
+				\item{Compartilhamento implícito de privilégios ou dados confidenciais;}
+				\item{Validação assíncrona ou serialização inadequada;}
+				\item{Autorização, autenticação ou identificação inadequadas;}
+				\item{Violação de proibição de limite;}
+				\item{Erro de lógica explorável;}
+			\end{itemize}
+			Esse estudo teve importância pelo pioneirismo, mas se limitava a problemas
+			de sistemas operacionais bem como não atendia a todos os princípios taxonômicos.
+
+	
+			Dois anos após o projeto RISOS, em 1978, seria criado o \textsl{Protection Analysis}(PA).
+			Seu objetivo principal era permitir que qualquer pessoa, mesmo sem conhecimento
+			específico sobre falhas de segurança, utilizando um padrão dirigido, pudesse
+			encontrar vulnerabilidades nos sistemas - \cite{Katrina2005}, pág. 2.
+			O PA, separava as falhas em 4 grandes classes - \cite{Gregio2005}, pág. 329:
+			\begin{itemize}
+				\item{Reforço e inicialização do domínio da proteção;}
+				\item{Validação de operandos / dependências no gerenciamento das filas;}
+				\item{Sincronização imprópria;}
+				\item{Erros de seleção de operadores críticos;}
+			\end{itemize}
+			Embora a ideia inicial do PA também incluísse a detecção automática de vulnerabilidades,
+			sendo pioneiro nesse ponto, a classificação proposta não era intuitiva e de difícil aplicação -
+			conforme consta em \cite{Katrina2005}. Logo, a aplicação prática não foi levada adiante, mas
+			a base da proposta adicionou conhecimento na área.
+
+
+			Segundo \cite{Gregio2005}, apenas no ano de 1992, teríamos uma nova proposta
+			de classificação que trouxesse nova perspectiva ao estudo em questão.
+			Trata-se do trabalho de Landwher: \textsl{A Taxonomy of Computer Security Flaws}.
+			Seu foco estava no auxílio aos projetistas no desenvolvimento mais seguro do software.
+			Sua classificação tinha por base 3 critérios:
+			\begin{itemize}
+				\item{Como o defeito entra no sistema(gênese);}
+				\item{Quando o defeito entrou no sistema(tempo de introdução);}
+				\item{Onde ele se manifesta(localização);}
+			\end{itemize}
+			De acordo com Grégio, seu principal problema era a ambiguidade no processo de classificação.
+			A dependência na visão do classificador tem do sistema impede a objetividade necessária
+			a uma boa taxonomia.
+			Outro problema nessa proposição, abordado por Katrina, em \cite{Katrina2005}, está
+			na dificuldade que pode surgir caso, por exemplo, se desconheça a forma como a vulnerabilidade
+			adentrou o sistema. Em tal situação, não seria possível identificar a gênese.
+			
+			
+			No ano de 1996, a taxonomia proposta por Aslam, em \textsl{Use of a Taxonomy of Security Faults},
+			traria nova acréscimo às pesquisas na área. Segundo, \cite{Katrina2005}(pág. 3), o esquema
+			proposto por Aslam é bastante preciso; consistindo numa série de perguntas para cada
+			categoria de vulnerabilidade. Em \cite{Gregio2005}(pág. 329), encontramos as 
+			classes criadas por Aslam, com suas subdivisões:
+			\begin{enumerate}
+				\item{Falhas de codificação;}
+					\subitem{Erros de sincronização;}
+					\subitem{Erros na validação de condição;}
+				\item{Falhas emergentes;}
+					\subitem{Erros de configuração;}
+					\subitem{Falhas no ambiente;}
+			\end{enumerate}
+			Embora seja uma taxonomia precisa, conforme ressaltado anteriormente, ela sofre
+			por estar focada excessivamente em sistemais UNIX - como indicado em \cite{Katrina2005}.
+			
+
+		\subsection{Taxonomias e classificações mais recentes}
+		\label{subsec:prop_taxonomicas_recentes}
+			Agora trataremos das propostas para classificação de vulnerabilidades que surgiram
+			mais recentemente (após 2005) e que merecem uma análise mais apurada. São eles:
+			\begin{itemize}
+				\item{\textsl{Preliminary List of Vulnerability Examples for Researchers}(PLOVER);}
+				\item{\textsl{Comprehesive, Lightweight Application Security Process}(CLASP);}
+				\item{\textsl{Seven Pernicious Kingdoms};}
+			\end{itemize}
+			São taxonomias que não passam pelo rigor científico, pois não atendem a todos
+			os princípios taxonômicos, mas que ainda assim acrescentam bastante sobre o
+			entendimento dos problemas que as vulnerabilidades representam. É o que
+			diz Meunier em \cite{Meunier2006} ao tratar das classificações populares.
+
+
+			O PLOVER, criado em 2005 por Steve Christey, é um esquema de classificação
+			que possui dezenas de categorias principais e, naturalmente, possui ainda mais precisão
+			do que a proposição de Aslam. Trata-se de um trabalho com sólidas fundações, pois
+			apresenta um \textsl{Framework} conceitual que permite discutir as vulnerabilidades
+			em diversos níveis. Ele pode ser encontrado em detalhes em \cite{Christey2006}.
+			Dentre as suas contribuições, destacam-se o caráter prático; mais de 1400 vulnerabilidades
+			identificadas no CVE foram devidamente classificadas utilizando esse sistema.
+
+
+			Do trabalho de John Viega e outros colaboradores, temos o CLASP. É um conjunto
+			de atividades que busca melhorar a segurança dos sistemas.
+			As classes mais básicas são:
+			\begin{itemize}
+				\item{Erros de range e de tipo;}
+				\item{Problemas no ambiente;}
+				\item{Erros de sincronização e de temporização;}
+				\item{Erros de protocolo;}
+				\item{Erros de lógica;}
+			\end{itemize}
+			
+
+
+			O \textsl{Seven Pernicious Kingdoms}.
 		
-		
-		O trabalho de \cite{Gregio2005} faz um levantamento amplo de algumas
-		dessas alternativas. Mas, como veremos, nenhuma delas atinge os objetivos
-		de uma taxonomia plena - apresentados na seção \ref{subsec:classificar}.
-		Assim, buscaremos discutir as ideias para as metodologias
-		de classificação com o intuito de apontar suas vantagens e fraquezas.
+		\subsection{O projeto CWE}
+						
+
+			
 
 	\section{Métricas para vulnerabilidades: CVSS}
 		Comparar objetivamente vulnerabilidades de acordo com sua criticidade é
 		algo muito útil para as organizações.
 		Isso possibilita que os gestores mensurem o grau de urgência com que devem
 		ser tratadas as ameaças. Podemos considerar esse procedimento
-		como um tipo rudimentar de classificação. 
+		como um tipo rudimentar de classificação. Ainda que não seja uma taxonomia,
+		assume um papel de destaque por permitir um padrão para distinguir
+		vulnerabilidades mais graves das demais.
 
 		\subsection{Surgimento do CVSS}
 			Para essa finalidade existe uma alternativa relativamente recente, o CVSS
@@ -416,8 +532,8 @@
 					\textbf{alto}}.
 				\item[Abundância de alvos]{Mensura a proporção dos possíveis alvos
 					sobre o contingente de sistemas da organização.
-					Pode ser \textbf{nenhum}, \textbf{baixo}(1 a 25\%), 
-					\textbf{médio}(26 a 75\%) e \textbf{alto}(76 a 100\%)
+					Pode ser \textbf{nenhuma}, \textbf{baixa}(1 a 25\%), 
+					\textbf{média}(26 a 75\%) e \textbf{alta}(76 a 100\%)
 					.}
 				\item[Importância da confidencialidade]{Indica a relevância da
 					confidencialidade dos dados mantidos pela empresa. Assume os valores
@@ -429,19 +545,9 @@
 
 		\subsection{Cálculo do escore}
 			Tendo sido apresentadas as métricas, faremos breve explicação
-			do funcionamento do cálculo do escore para uma vulnerabilidade.
+			do funcionamento do cálculo do escore,
+			que varia de 0 a 10, para uma vulnerabilidade.
 			A figura \ref{fig:cvss_metricas_equacoes} apresenta uma visão geral desse processo. 
-			Passos necessários:
-			\begin{enumerate}
-				\item{Para cada um dos critérios descritos na Seção \ref{subsec:metricas_cvss},
-					atribuir um valor válido.}
-				\item{Consultar as tabelas para definir um valor numérico para cada métrica.}
-				\item{Fazer o cálculo do escore básico usando sua respectiva equação.}
-				\item{Fazer o cálculo do escore temporal usando sua respectiva equação e o escore básico.}
-				\item{Calcular o do escore final usando sua respectiva equação e o escore temporal.}
-			\end{enumerate}
-			
-
 			\begin{figure}
 				\begin{center}
 					\includegraphics[width=0.85\textwidth]{cvss_metricas_equacoes.jpg}
@@ -449,17 +555,24 @@
 					\label{fig:cvss_metricas_equacoes}
 				\end{center}
 			\end{figure}
-
-
-
-		\subsection{Exemplificando em vulnerabilidades reais}
-			Para deixar mais claro a aplicabilidade do CVSS, iremos apresentar o
-			cálculo do escore de duas vulnerabilidades, que são abordadas pelo trabalho
-			na Seção \ref{subsec:linux_kernel_vuln}.
-			São elas: CVE-2009-2692 e CVE-2009-3547.
-
-
-			Os escores foram obtidos no site do NIST.
-			http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2009-2692
+			Passos necessários:
+			\begin{enumerate}
+				\item{Para cada um dos critérios descritos na Seção \ref{subsec:metricas_cvss},
+					atribuir um valor válido.}
+				\item{Consultar as tabelas, no capítulo	\ref{chap:equacoes_cvss},
+					para definir um valor numérico a partir do valor nominal escolhido no passo anterior.}
+				\item{Fazer o cálculo do escore básico usando a equação básica disponível em TODO.}
+				\item{Fazer o cálculo do escore temporal usando sua respectiva equação TODO,
+					 e o escore básico.	Passo opcional. É possível manter apenas o escore básico como o final.}
+				\item{Calcular o do escore final usando a equação ambiental, TODO,
+					 a partir do escore temporal. Também é opcional; pois os critérios 
+					ambientais podem ser desconsiderados.}
+			\end{enumerate}
 			
+			
+			Ao final do cálculo, a vulnerabilidade recebe um escore de 0 a 10.
+			Sendo 10 o valor da mais crítica possível. É importante destacar, que a atribuição
+			dos valores, feita no passo 1, deve ser realizada por especialistas na área seguindo
+			um critérios padronizados.
 
+			

@@ -18,6 +18,7 @@
 \usepackage{graphicx}           % pacote para importar figuras
 \graphicspath{{./figs/}}
 \DeclareGraphicsExtensions{.pdf,.jpg,.png}
+\usepackage{multirow} % multiplas linhas nas tabelas
 
 \usepackage{times}              % pacote para usar fonte Adobe Times
 \usepackage{listings}           % pacote para mostrar código fonte 
@@ -112,8 +113,6 @@
 \begin{document}
 
 % folha de rosto
-% s vezes  necessrio redefinir algum comando logo antes de produzir
-% a folha de rosto:
 % \renewcommand{\coordname}{Coordenadora do Curso}
 \maketitle
 
@@ -142,6 +141,7 @@ Estou por agradecer\ldots
 		\item[CVE] Common Vulnerabilities and Exposures
 		\item[CVSS] Common Vulnerability Scoring System
 		\item[CPU] Central Processing Unit
+		\item[CWE] Common Weakness Enumeration
 		\item[DoS] Denial of Service
 		\item[DPL] Descriptor Privelege Level
         \item[NUMA] Non-Uniform Memory Access
@@ -188,5 +188,11 @@ to be written\ldots
 %
 \bibliographystyle{abnt}
 \bibliography{bibliografia}
+
+%
+% apendix
+%
+\appendix
+\include{equacoes_cvss}
 
 \end{document}

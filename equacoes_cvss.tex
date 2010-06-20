@@ -1,0 +1,136 @@
+
+\chapter{Equações CVSS 2.0}
+\label{chap:equacoes_cvss}
+
+
+	Abaixo seguem as equações para cálculo do escore básico.
+	\begin{equation}
+		\label{equacao_basica}
+		EscoreBasico = ((0.6 * Impacto)+(0.4 * Explorabilidade) - 1.5)*algo
+	\end{equation}
+
+	\begin{equation}
+		\label{equacao_impacto}
+		Impacto = 10.41 * (1-(1-ImactoConf) * (1-ImpactoInt) * (1-ImpactoDisp))
+	\end{equation}
+
+	\begin{equation}
+		\label{equacao_explorabilidade}
+		Explorabilidade = 20 * VetorAcesso * ComplexidadeAcesso * NecessidadeAut
+	\end{equation}
+
+
+	Equações para cálculo do escore temporal (utiliza o escore básico):
+	\begin{equation}
+		\label{equacao_temporal}
+		EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
+	\end{equation}
+
+	Equações para cálculo do escore ambiental (utiliza o escore temporal):
+	\begin{equation}
+		\label{equacao_ambiental}
+		EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
+	\end{equation}
+	
+
+	% Metricas básicas
+	\begin{table}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{ \textbf{Métricas básicas} } \\
+			\hline
+			\textbf{Métrica} & \textbf{Valor nominal} & \textbf{Valor numérico}\\
+			\hline
+			\multirow{3}{*}{Vetor de acesso} & local & 0.395 \\
+			& rede adjacente & 0.646 \\
+			& rede & 1.0 \\ 
+			\hline
+			\multirow{3}{*}{Complexidade de acesso} & alta & 0.35 \\
+			& média & 0.61 \\
+			& baixa & 0.71 \\
+			\hline
+			\multirow{3}{*}{Necessidade de autenticação} & várias & 0.45 \\
+			& uma & 0.56\\
+			& nenhuma & 0.704\\
+			\hline
+			\multirow{3}{*}{Impacto na confidencialidade} & nenhum & 0.0 \\
+			& parcial & 0.275\\
+			& completo & 0.660\\
+			\hline
+			\multirow{3}{*}{Impacto na integridade} & nenhum & 0.0 \\
+			& parcial & 0.275\\
+			& completo & 0.660\\
+			\hline
+			\multirow{3}{*}{Impacto na disponibilidade} & nenhum & 0.0 \\
+			& parcial & 0.275\\
+			& completo & 0.660\\
+			\hline
+		\end{tabular}
+	\end{table}
+
+	% Metricas temporais
+	\begin{table}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{ \textbf{Métricas temporais} } \\
+			\hline
+			\textbf{Métrica} & \textbf{Valor nominal} & \textbf{Valor numérico}\\
+			\hline
+			\multirow{5}{*}{Facilidade de exploração} & não comprovada & 0.85 \\
+			& prova de conceito & 0.9 \\
+			& funcional & 0.95 \\ 
+			& alta & 1.0 \\
+			& não definida & 1.0 \\ 
+			\hline
+			\multirow{5}{*}{Nível de remediação} & conserto definitivo  & 0.87 \\
+			& conserto temporário & 0.90\\
+			& \textsl{workaround} & 0.95\\
+			& indisponível & 1.0\\
+			& não definido & 1.0\\
+			\hline
+			\multirow{4}{*}{Confiabilidade no \textsl{report}} & não confirmada & 0.9 \\
+			& não corroborada & 0.95\\
+			& confirmada & 1.0\\
+			& não disponível & 1.0\\
+			\hline
+		\end{tabular}
+	\end{table}
+
+	% Metricas ambientais
+	\begin{table}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{ \textbf{Métricas ambientais} } \\
+			\hline
+			\textbf{Métrica} & \textbf{Valor nominal} & \textbf{Valor numérico}\\
+			\hline
+			\multirow{6}{*}{Dano colateral potencial} & nenhum & 0.0\\
+			& baixo        & 0.1 \\
+			& baixo-médio  & 0.3 \\ 
+			& médio-alto   & 0.4 \\
+			& alto         & 0.5 \\ 
+			& não definido & 0 \\ 
+			\hline
+			\multirow{4}{*}{Abundância de alvos} & nenhuma & 0 \\
+			& baixa & 0.25\\
+			& média & 0.75\\
+			& alta  & 1.0\\
+			& não definida  & 1.0\\
+			\hline
+			\multirow{4}{*}{Importância da confiabilidade} & baixa & 0.5 \\
+			& média & 1.0\\
+			& alta & 1.51\\
+			& não definida & 1.0\\
+			\hline
+			\multirow{4}{*}{Importância da integridade} & baixa & 0.5 \\
+			& média & 1.0\\
+			& alta & 1.51\\
+			& não definida & 1.0\\
+			\hline
+			\multirow{4}{*}{Importância da disponibilidade} & baixa & 0.5 \\
+			& média & 1.0\\
+			& alta & 1.51\\
+			& não definida & 1.0\\
+			\hline
+		\end{tabular}
+	\end{table}
