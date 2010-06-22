@@ -2,12 +2,80 @@
 \chapter{Introdução}
 \label{chap:introducao}
 
-Do que se trata o trabalho?
+	\textsl{A Internet...foi projetada no espírito da confiança. Nem os protocolos
+		de rede de comunicações nem o software que comanda os sistemas computacionais(nodos)
+		conectados a rede foram arquitetados para operação num ambiente 
+		no qual estão sob ataque.}\cite{PITAC2005}. 
+	Esse trecho\footnote{Traduzido livremente pelo autor do presente trabalho.\label{fn:trad}}
+	foi extraído de um \textsl{report} criado pelo comitê consultivo sobre tecnologia da
+	informação do presidente dos Estados Unidos. Sua intenção é chamar atenção para
+	um problema que ameça todos os países do mundo e que, sem o devido tratamento,
+	pode trazer graves consequências às nações.
 
-Qual seu objetivo?
 
-O que acrescenta?
+	Esse mesmo documento vai além e adverte para as consequências da insegurança:
+	\textsl{Apesar dos recentes esforços para adicionar componentes de segurança aos
+		sistemas computacionais, às redes e ao software, os atos hostis
+		se propagam largamente causando danos em escala nacional e internacional.}\footref{fn:trad}
+	Conforme os consultores, o elo mais fraco da cadeia é o software.
+	\textsl{Os métodos de desenvolvimento de software...falham em prover
+		a alta qualidade, a confiabilidade e a segurança das quais os ambientes
+		de tecnologia da informação necessitam.}\footref{fn:trad}
 
+
+	Logo, de acordo com os estudos estratégicos de defesa da nação mais poderosa do mundo,
+	um dos seus pontos mais vulneráveis é o software que compõe seus sistemas. E mais,
+	o processo de desenvolvimento é considerado como fator predominante para a existência
+	dessa ameaça. E, é claro, diante da crescente ubiquidade dos sistemas de computação e, 
+	por consequência, do software, aumenta ainda mais a responsabilidade dos projetistas e 
+	dos desenvolvedores em garantir que seu trabalho não será utilizado em prejuízo dos usuários.
+
+
+	Por isso é fundamental que todos aqueles envolvidos no processo de produção
+	do software tenham o devido conhecimento das implicações relativas à segurança.
+	Conhecer as vulnerabilidades e saber como detectá-las acabam sendo habilidades
+	necessárias para garantir projetos seguros.
+
+	
+	Outra forma de contribuir para atenuação dessa ameaça, é conhecer as táticas aplicadas
+	pelos atacantes. Pois: \textsl{quanto mais se sabe sobre o que o seu inimigo é capaz de fazer,
+	maior é a sua condição de discernir sobre quais mecanismos são necessários para sua própria
+	defesa} - \cite{Harris2008}\footref{fn:trad}. O conhecimento das técnicas de ataque 
+	constitui, portanto, mais uma das dimensões que compõem uma estratégia de defesa.	
+
+	
+	O foco do presente trabalho gira em torno de dois conceitos abordados anteriormente:
+	vulnerabilidade e \textsl{exploits}. Ambos são apresentados e sob a ótica
+	do desenvolvedor de sistemas e do atacante num esforço para contextualizar o leitor
+	sobre os caminhos para tornar o software mais seguro.
+	
+	
 	\section{Organização do trabalho}
-		Como é organizado?
+		Para alcançar o objetivo proposto, esse trabalho está organizado da seguinte forma.
+		Inicia com conceitos básicos que servem de suporte aos capítulos seguintes. São
+		definições de termos usados e informações básicas sobre o funcionamento do software - como
+		organização da memória dos processos, virtualização da memória, entre outros.
+
+		No terceiro capítulo, é abordado o tópico de classificação de vulnerabilidades.
+		Nele, o leitor terá contato com propostas e projetos que auxiliam o estudo dessa matéria.
+
+
+		O quarto capítulo traz uma visão geral sobre técnicas de exploração de vulnerabilidades: os
+		\textsl{exploits}.
+
+		Para ilustrar com mai precisão os conceitos de vulnerabilidade e de exploit na prática,
+		é apresentado em mais detalhes o \textsl{NULL pointer exploit}. Tópico que assume
+		bastante relevância uma vez que uma série de falhas desse gênero foram recentemente
+		descobertas - muitas deles no Kernel do Linux, onde permaneceram por mais de 8 anos.
+
+		O último capítulo aborda uma técnica para detecção de vulnerabilidades: \textsl{Fuzzing}.
+		Foi escolhida entre as demais para constar nesse trabalho pois possui excelente relação
+		custo benefício. É destacada com o intuito de mostrar aos desenvolvedores estejam
+		atentos aos métodos empregados pelos atacantes e possam aplicá-las deles.
+		
+		
+
+		
+
+		
 
