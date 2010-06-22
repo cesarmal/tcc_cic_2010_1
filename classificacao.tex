@@ -324,32 +324,117 @@
 			diz Meunier em \cite{Meunier2006} ao tratar das classificações populares.
 
 
-			O PLOVER, criado em 2005 por Steve Christey, é um esquema de classificação
+			O PLOVER, criado em 2005 pelo MITRE em colaboração com o 
+			DHS(\textsl{US. Departement	of Homeland Security})\footnote{http://www.dhs.gov/index.shtm} e o
+			o NIST(\textsl{National Institute of Technology}) é um esquema de classificação
 			que possui dezenas de categorias principais e, naturalmente, possui ainda mais precisão
-			do que a proposição de Aslam. Trata-se de um trabalho com sólidas fundações, pois
+			do que a proposição de Aslam. Um de seus principais idealizadores foi Steve Christey.
+			Trata-se de um trabalho com sólidas fundações, pois
 			apresenta um \textsl{Framework} conceitual que permite discutir as vulnerabilidades
 			em diversos níveis. Ele pode ser encontrado em detalhes em \cite{Christey2006}.
 			Dentre as suas contribuições, destacam-se o caráter prático; mais de 1400 vulnerabilidades
 			identificadas no CVE foram devidamente classificadas utilizando esse sistema.
+			Foi uma taxonomia construída de baixa para cima(\textsl{bottom-up}).
 
+			
 
 			Do trabalho de John Viega e outros colaboradores, temos o CLASP. É um conjunto
-			de atividades que busca melhorar a segurança dos sistemas.
-			As classes mais básicas são:
+			de atividades que busca melhorar a segurança dos sistemas. Ele parte do trabalho
+			proposto por Landwher(que utiliza os critérios de gênese, tempo de introdução e localização).
+			O CLASP adiciona outro eixo classificatório: a consequência.
+			As classes mais básicas, tipo do problema, são:
 			\begin{itemize}
-				\item{Erros de range e de tipo;}
+				\item{Erros de \textsl{range} e de tipo;}
 				\item{Problemas no ambiente;}
 				\item{Erros de sincronização e de temporização;}
 				\item{Erros de protocolo;}
 				\item{Erros de lógica;}
+				\item{\textsl{Malware};}
 			\end{itemize}
+			Para exemplificar, consideremos uma falha que permita um \textsl{buffer overflow}.
+			Segundo o CLASP, trata-se de um erro de tipo e de \textsl{range} - já
+			que é permitida a escrita além do permitido no \textsl{buffer}. A injeção de SQL
+			também cai na mesma categoria, pois os dados passados pelo usuário são utilizados
+			incorretamente; permitindo que assumam um tipo inesperado. Já um erro no qual é ignorado
+			o valor de retorno de uma função é considerado como erro de lógica - como, por exemplo,
+			uma chamada à função malloc que não avalia se a alocação de memória foi bem sucedida.
+
+
+			
+			O \textsl{Seven Pernicious Kingdoms}, de autoria de Katrina Tsipenyuk et alem, conforme
+			\cite{McGraw2006}(capítulo 12), é uma taxonomia que, mesmo sendo imperfeita possibilita
+			um bom entendimento por parte dos desenvolvedores; auxiliando na prevenção de problemas.
+			É estruturada em dois conjuntos emprestados da Biologia: Filo e Reino.
+			O Reino é a classificação mais ampla - enquanto o Filo é uma subdivisão do Reino.
+			Possui 8 reinos; procurando respeitar a famosa regra de George Miller 
+			do "sete mais ou menos dois"\footnote{Artigo 
+			\textsl{The Magic Number Seven, Plus or Minus Two} de George Miller.}. São eles:
+			\begin{description}
+				\item[Erro de validação e de representação]{Resultam da confiança
+					indevida nos dados de entrada. Caso do \textsl{buffer overflow},
+					injeção de SQL, XSS.}
+				\item[Abuso de API]{Sendo a API um contrato entre quem chama a rotina
+					e aquela que é chamada, uma quebra das regras pode resultar em problemas de segurança.
+					Quando quem chama uma função assume certas condições que não estão garantidas
+					pela rotina chamada, temos um caso de abuso de API.}
+				\item[\textsl{Features} de segurança]{Trata do uso correto de peças chave na
+					garantia da segurança do software como: criptografia, autenticação, gerenciamento
+					de privilégios, entre outros.}
+				\item[Tempo e estado]{Relativo a problemas advindos do paralelismo. Como erros
+					na sincronização que expõem o sistema.}
+				\item[Gerenciamento de erros]{Vulnerabilidades desse reino surgem quando
+					os erros não tratados corretamente. Quando um erro expõe informações
+					do sistema ao atacante desnecessariamente, já estamos diante de um exemplo.}
+				\item[Qualidade de código]{Se a qualidade é baixa, o comportamento é imprevisível.
+					Tendo em vista essa regra, problemas na codificação acabam levando
+					a erros que permitem a subversão do sistema.}
+				\item[Encapsulamento]{Falhas relacionadas ao não estabelecimento de limites entre os 
+					componentes do sistema.}
+				\item[Ambiente]{Trata de problemas surgidos com questões externas ao software.
+					Não estão relacionados ao código, mas influenciam diretamente na segurança.}
+			\end{description}
+			
+			
+			Como subdivisões dos reinos, encontramos, por exemplo, o filo correspondente ao
+			\textsl{buffer overflow} - no reino do Erro de Validação e de Representação.
+			Ainda nele, também encontramos o filo de Injeção de Comandos.			
+			Já no reino de \textsl{Features de segurança}, está o filo da Randomização Insegura -
+			que trata da randomização incorreta que pode ser uma fraqueza para a criptografia.
+			O erro correspondente a NULL \textsl{pointer} pertence ao filo \textsl{Null Dereference} -
+			que por sua vez é englobado pelo reino Qualidade de código.
 			
 
+			Essa classificação foi desenvolvida com a projeção da adição de novos filos
+			conforme a necessidade. O intuito foi de criar reinos amplos o suficiente para que
+			os devidos filos fossem incorporados com o tempo.
 
-			O \textsl{Seven Pernicious Kingdoms}.
 		
 		\subsection{O projeto CWE}
-						
+			\label{subsec:cwe}
+			Após o surgimento do CVE, uma padronização para identificação das vulnerabilidades
+			foi sendo alcançada. Entretanto, a classificação, que não era objetivo direto do CVE,
+			foi deixada de lado pelo projeto. Em 2005, mais de 5 anos depois da criação do CVE, 
+			após o estudo de uma série de vulnerabilidades catalogadas, foi 
+			gerado o PLOVER - abordado na Seção anterior.
+			
+
+			A partir do estudo e da classificação resultante do PLOVER, surgiu a possibilidade
+			de se estabelecer descrições comuns a comunidade para os tipos de vulnerabilidades.
+			Desse esforço, surge o CWE: \textsl{Common Weakness Enumeration}\footnote{http://cwe.mitre.org/}.
+
+			
+			Conforme encontramos em \cite{CWEAbout}, ele é uma resposta à necessidade das instituições
+			e das organizações em utilizarem os mesmos termos e taxonomias no tratamento dos
+			problemas de segurança que enfrentam. Como saber quais as classes de vulnerabilidades
+			que uma ferramenta de detecção é capaz de encontrar? Perguntas como essas caem justamente
+			no escopo do CWE.
+			
+
+			Embora esteja fundamentada na classificação proposta pelo PLOVER, o CWE não se limita
+			a ela. Também opera com outras como: \textsl{Seven Pernicious Kingdoms} e o CLASP.
+			
+
+	
 
 			
 
