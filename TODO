@@ -1,6 +1,6 @@
 
 Como identificar que retirou a figura de outro trabalho conforme
-as normas da ABNT?
+as normas da ABNT? Colocar "fonte: $origem".
 
 Explicar as técnicas de proteção:
 	Non-executable pages
@@ -19,10 +19,12 @@ Adicionar definição de memcpy usada em exemplo.
 Colocar a primeira referência a problema de NULL pointer
 encontrada em .
 
-Como citar um commit do kernel do Linux?
+Como citar um commit do kernel do Linux? Está OK.
 
 Citar zero-day vulnerabilities na parte de classificação.
 
 Resolver notas de rodapé dentro de tabelas.
 
 Adicionar nos conceitos: atacante.
+
+Desabilitar separação de palavras.
