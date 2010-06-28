@@ -43,7 +43,7 @@
 
 % a data deve ser a da defesa; se nao especificada, so gerados
 % mes e ano correntes
-%\date{maio}{2001}
+\date{Junho}{2010}
 
 % o nome do curso pode ser redefinido (ex. para TCs)
 \course{Ciência da Computação}
@@ -127,10 +127,24 @@ it is because I stood on the shoulders of giants.''\\}
 --- \textsc{Sir~Isaac Newton}
 \end{flushright}
 
-% agradecimentois
+% agradecimentos
 \chapter*{Agradecimentos}
-Estou por agradecer\ldots
+Não poderia, em hipótese alguma, deixar de agradecer minha família por tudo que alcancei
+em meus estudos. Sobretudo o apoio de meus pais. Neles sempre tive o incentivo e a estrutura
+necessárias para o meu desenvolvimento.
 
+
+Agradeço também a todos que contribuem para o excelente funcionamento do Instituto de Informática
+da UFRGS. Notável pelo interesse de seus professores e funcionários. Provando que o ensino
+público de qualidade é alcançável e oferece a nossa sociedade enormes benefícios.
+Em especial ao meu orientador Raul Fernando Weber; professor de enorme qualidade que muito 
+contribuiu pelo meu interesse na área de segurança da computação e que me auxiliou 
+no desenvolvimento desse trabalho.
+
+
+Deixo também um agradecimento especial a uma pessoa que nunca deixou
+de me lembrar do meu potencial e me auxiliou durante períodos difíceis. 
+Ela que me acompanhou durante parte da minha jornada no curso: minha namorada Luciana.
 % sumario
 \tableofcontents
 
@@ -169,14 +183,49 @@ Estou por agradecer\ldots
 
 % resumo na lngua do documento
 \begin{abstract}
-a escrever\ldots
+	A importância do software em nossa sociedade aumenta a cada dia. Entretanto,
+	ele ainda sofre com vários problemas de segurança - a maioria deles relacionados
+	ao seu desenvolvimento. Para auxiliar os desenvolvedores no entendimento dessa matéria,
+	esse trabalho trata de pontos chave na segurança do software: vulnerabilidades
+	e \textsl{exploits}.
+
+
+	Dois temas principais relacionados a vulnerabilidades são apresentados: métodos
+	de classificação e detecção através da técnica \textsl{fuzzing}. Ambos objetivando
+	fornecer ao leitor conceitos básicos para o alcance de um desenvolvimento mais seguro
+	e consciente do software. Dado o enorme valor da técnica \textsl{fuzzing} na descoberta
+	de vulnerabilidades, ela é proposta como nova ferramenta aos desenvolvedores para
+	que eles a apliquem antes dos atacantes.
+
+
+	Considerando que o conhecimento de técnicas de \textsl{exploits} é indispensável
+	na busca por software mais seguro, esse trabalho também tenta oferecer ao leitor
+	uma visão a partir da perspectiva dos atacantes. Para isso, uma visão geral dos
+	\textsl{exploits} é apresentada. Após uma ideia mais ampla nos métodos dos atacantes,
+	um deles é detalhado: o \textsl{NULL pointer exploit}.
 \end{abstract}
 
 % resumo na outra língua
 % como parametros devem ser passados o título e as palavras-chave
 % na outra língua, separadas por vírgulas
 \begin{englishabstract}{Exploits: técnicas, detecção e prevenção}{security, exploits, testing}
-to be written\ldots
+	Software becomes more important in our society everyday . However, it still suffers
+	from many security problems - most of them related to its development. 
+	To help developers in understanding the subject, this paper addresses key points in 
+	software security: vulnerabilities and exploits.
+
+
+	Two main issues related to vulnerabilities are presented: classification methods 
+	and detection through fuzzing technique. Both aim at offering the reader basic concepts
+	to achieve safer and more conscious software development. Given the great value
+	of fuzzing technique in vulnerabilities discovery, it is proposed as a new tool to developers
+	so that they can apply it before the attackers.
+
+
+	Considering the knowledge of exploit techniques indispensable in the pursuit of building safer software,
+	this paper also tries to offer a view from the attackers perspective. To achieve it, an overview of 
+	exploits is presented. After giving a broad idea on the attackers methods, one of them is detailed: 
+	the NULL pointer exploit.
 \end{englishabstract}
 
 % capítulos em arquivo próprio
