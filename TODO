@@ -4,11 +4,6 @@ as normas da ABNT? Colocar "fonte: $origem".
 
 Explicar as técnicas de proteção:
 	Non-executable pages
-	StackGuard
-	Random placement of libraries
-
-Explicar a técnica de exploit: 
-	Code Spraying busca derrotar ASLR (diminui a entropia fazendo cópias do shellcode).
 
 Como adicionar livro com vários autores usando jabref?
 
