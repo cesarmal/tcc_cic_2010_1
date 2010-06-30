@@ -21,12 +21,20 @@
 		\item{Erros de configuração ou de infra-estrutura do sistema}
 	\end{itemize}
 
+	
+	Na sequência desse trabalho, serão aprofundados melhor esses dois conceitos. Também
+	serão examinadas com mais detalhe as causas dos problemas no software.
 
-	\section{Conceitos básicos}
-		Neste trabalho iremos tratar de \textsl{exploit}s na arquitetura x86 de 32 bits. 
+	\section{Pressupostos básicos}
+		Neste trabalho iremos tratar principalmente de \textsl{exploits} na arquitetura x86 de 32 bits. 
 		Trata-se da arquitetura de computadores
 		pessoais mais difundida nos dias de hoje. Mas boa parte do estudo realizado pode ser aplicada
 		a praticamente qualquer outra arquitetura.
+
+
+		Dessa forma, principalmente quando tratarmos de erros de corrupção de memória, lembramos
+		que as discussões serão feitas com a arquitetura x86 de 32 bits em mente. Sendo devidamente
+		sinalizado quando forem examinados aspectos de outros casos. 
 
 	\section{Memória Virtual}
 		Para facilitar o entendimento de questões discutidas nesse trabalho, é importante esclarecer
@@ -54,7 +62,7 @@
 		\begin{figure}
 			\begin{center}
 				\includegraphics[width=0.35\textwidth]{Virtual_memory.jpg}
-				\caption{Esquema de memória virtual (retirada da Wikepedia)}
+				\caption{Esquema de memória virtual. Fonte: Wikepedia - Junho 2010.}
 				\label{fig:memoria_virtual}
 			\end{center}
 		\end{figure}
@@ -80,7 +88,7 @@
 			\begin{figure}
 				\begin{center}
 					\includegraphics[width=0.8\textwidth]{x86_end_virtual_para_fisico.jpg}
-					\caption{Processamento de endereço na arquitetura x86 - retirada de \cite{Bovet2005}}
+					\caption{Processamento de endereço na arquitetura x86. Fonte: \cite{Bovet2005}}
 					\label{fig:x86_end_virtual_para_fisico}
 				\end{center}
 			\end{figure}
@@ -183,14 +191,14 @@
 	\label{sec:gerencia_memoria}
 	O controle da memória é um ponto crítico. Falhas nele acabam resultando em vulnerabilidades 
 	gravíssimas. Faremos uma breve abordagem sobre o gerenciamento de memória sobre
-	o ponto de vista dos \textsl{exploit}s.
+	o ponto de vista dos \textsl{exploits}.
 
 	Um primeiro ponto a destacar sobre a memória é um princípio básico que norteia
 	quase todas as arquiteturas modernas. Dados e instruções não são diferenciados na memória.
 	Ou seja, não há uma separação rígida entre instruções que compõem um programa e os dados
 	sobre os quais opera. Essa característica foi herdada da arquitetura básica de von Neumann.
 	Como veremos a seguir, essa decisão de design, com origem nos anos 1940, embora tenha
-	facilitado a evolução dos computadores, abriu caminhos para os \textsl{exploit}s que conhecemos hoje. 
+	facilitado a evolução dos computadores, abriu caminhos para os \textsl{exploits} que conhecemos hoje. 
 
 	Abaixo descrevemos o layout básico da memória de um processo em um sistema UNIX.
 	Ele pode ser separado em 6 partes fundamentais:
@@ -204,27 +212,27 @@
 			Nome de origem história significando Block Started by Symbol. Área da memória responsável
 			por armazenar variáveis globais	não inicializadas. Como text e data, bss também tem tamanho 
 			fixo conhecido desde o início do processo. 
-		\item[Heap]
+		\item[\textsl{heap}]
 			Espaço para variáveis alocadas dinamicamente. A chamada de sistema sbrk é responsável
 			pelo controle do crescimento/encolhimento desse espaço. Bibliotecas geralmente facilitam a vida
 			do programador disponibilizando interfaces mais amigáveis como malloc() e free(). Assim a biblioteca
-			se encarrega de chamar sbrk() para diminuir/aumentar o Heap. Ela cresce do endereço mais baixo para o
+			se encarrega de chamar sbrk() para diminuir/aumentar o heap. Ela cresce do endereço mais baixo para o
 			mais alto.
-		\item[Stack]
+		\item[\textsl{stack}]
 			Mantém controle das chamadas de funções. Possibilita a recursividade. Logo, possui
-			tamanho variável - crescendo do endereço mais alto para o mais baixo (sendo antagonista do Heap - ver
+			tamanho variável - crescendo do endereço mais alto para o mais baixo (sendo antagonista do heap - ver
 			figura \ref{fig:regioes_memoria}). 
 			Esse crescimento é que torna possível que uma chamada de função que tenha seus dados
-			sobrescritos influencie numa chamada de função anterior. Esse é o princípio do buffer overflow - tratado
-			posteriormente.
-		\item[Enviroment]
+			sobrescritos influencie numa chamada de função anterior. Esse característica é explorada
+			pelo \textsl{Buffer Overflow} - tratado no capítulo \ref{chap:exploits}.
+		\item[\textsl{enviroment}]
 			A última porção de memória do processo guarda uma cópia das variáveis de ambiente do sistema.
 			Essa seção possui permissão de escrita, mas como bss, data e text, possui tamanho fixo.
 	\end{description}
 
 	\begin{figure}
 		\begin{center}
-		\includegraphics[width=0.45\textwidth]{regioes_memoria.pdf}
+		\includegraphics[width=0.55\textwidth]{regioes_memoria.pdf}
 		\caption{Regiões de memória em um processo.}
 		\label{fig:regioes_memoria}
 		\end{center}
@@ -245,7 +253,7 @@
 	\begin{figure}
 		\begin{center}
 		\includegraphics[width=0.5\textwidth]{stack_frame_furlan.jpg}
-		\caption{Organização do \textsl{frame} na pilha. Retirado de \cite{Furlan2005} pg. 17.}
+		\caption{Organização do \textsl{frame} na pilha. Fonte: \cite{Furlan2005} pg. 17.}
 		\label{fig:stack_frame}
 		\end{center}
 	\end{figure}
@@ -256,10 +264,10 @@
 	Para completar o \textsl{frame}, aquela que é chamada, empilha o endereço do frame da função chamadora
 	(EBP) e posteriormente aloca na pilha o espaço correspondente a suas variáveis locais.
 	É importante ressaltar que, caso o endereço de retorno, empilhado por quem chama, seja alterado,
-	o fluxo de execução é mudado. Pois é justamente este o princípio do \textsl{buffer overflow}.
+	o fluxo de execução é mudado. Pois é justamente este o princípio do \textsl{Buffer Overflow}.
 	Ele será abordado em maior detalhes na Seção \ref{subsec:buffer_overflow}.
 
-	\section{Funcionamento mais detalhado do Heap}
+	\section{Funcionamento mais detalhado do heap}
 	\label{sec:funcionamento_heap}
 	A porção de memória correspondente ao heap possibilita ao programador alocar dinamicamente memória
 	que fica disponível durante toda a execução para qualquer chamada de função.
@@ -282,19 +290,18 @@
 	exatamente como os blocos são mantidos.
 
 	\section{Mapemamento de memória anônimo}
-	Como visto no funcionamento básico do Heap, a fragmentação é um problema a ser considerado.
-	Uma forma alternativa de alocar memória dinamicamente que não usa o Heap são os mapeamentos anônimos.
+	Como visto no funcionamento básico do heap, a fragmentação é um problema a ser considerado.
+	Uma forma alternativa de alocar memória dinamicamente que não usa o heap são os mapeamentos anônimos.
 	No Linux por exemplo, através da função mmap() é possível alocar um bloco de memória contínuo
-	fora do Heap que não está sujeito aos problemas de fragmentação.
-	Conforme, \cite{Love2007}, é possível considerar esse espaço de memória como um novo Heap
+	fora do heap que não está sujeito aos problemas de fragmentação.
+	Conforme, \cite{Love2007}, é possível considerar esse espaço de memória como um novo heap
 	vindo de apenas uma alocação.
 	No exemplo a seguir, é requisitado uma porção de memória de 64 bytes iniciando em NULL.
-	\begin{verbatim}
-		mmap(NULL, 64, PROT_READ | PROT_WRITE,
-			MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-	\end{verbatim}
+	\begin{lstlisting}[label=mmap_example,caption=Mapeamento de memória anônimo.]
+		mmap(NULL, 64, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+	\end{lstlisting}
 	Na técnica \textsl{NULL pointer exploit}, conforme veremos mais adiante, essa possibilidade
-	de alocarmos um bloco com o início pré-determinado é muito útil.
+	de alocar um bloco com o início pré-determinado é muito útil.
 	No caso da chamada de mmap() do exemplo anterior, estamos obtendo um bloco de 64 bytes começando
 	no endereço zero(NULL). Isso nos permite colocar código executável nessa porção da memória e,
 	na presença de uma vulnerabilidade, desviar a execução para esse ponto.
@@ -310,15 +317,25 @@
 	O EBP indica o início da pilha para aquela chamada de função. É usado para referenciar variáveis
 	locais da função.
 
-	\section{Shellcode}
-	Outra parte fundamental de quase todo \textsl{exploit} é o chamado \textsl{shellcode}.
+	\section{\textsl{Shellcode}}
+	Outra parte fundamental de muitos \textsl{exploits} é o chamado \textsl{shellcode}.
 	Podemos definí-lo, segundo \cite{Anley2007}, como um conjunto de instruções que são injetados
-	e executados por um programa através de um \textsl{exploit}. 
+	e executados por um programa através de um \textsl{exploit}. Normalmente, é escrito em linguagem
+	\textsl{assembly} por manipular diretamente os registradores e depois transformado em \textsl{opcodes}
+	em hexadecimal.
 
 
 	A palavra \textsl{shell} contida em seu nome tem origem no fato de, normalmente, ele ser usado
 	para abrir um \textsl{shell} na máquina atacada. Sendo aberto com permissões de \textsl{root},
 	o atacante assume controle absoluto do sistema. Ainda que isso seja o mais comum, o \textsl{shellcode}
 	não se restringe a isso. Como qualquer outro programa, ele, em muitos casos, só é limitado pela imaginação
-	do seu construtor.
+	do seu construtor. Sua criação envolve certas dificuldades, como a ausência de bytes em zero; já que
+	normalmente, ele é armazenado na memória como uma string na linguagem C - que termina com um zero.
 	
+
+	Atualmente, existem diversos tipos de \textsl{shellcode} disponíveis para os mais variados
+	sistemas e arquiteturas. Dificilmente um atacante terá a necessidade de produzir seu próprio
+	dada a abundância de alternativas prontas. Alguns, por exemplo, possuem até estratégias para enganar 
+	sistemas de detecção de invasão. Para as necessidades desse trabalho, não iremos nos aprofundar
+	nesse tema, mas no capítulo 2 de \cite{Anley2007}, há informações muito úteis para um aprendizado
+	de \textsl{shellcode}.

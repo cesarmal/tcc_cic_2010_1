@@ -171,8 +171,8 @@
 			\begin{figure}
 				\begin{center}
 					\includegraphics[width=0.65\textwidth]{vulnerabilidades_CVE.jpg}
-					\caption{Vulnerabilidades registradas no CVE ao longo do tempo - retirada 
-							de \cite{Florian2009}}
+					\caption{Vulnerabilidades registradas no CVE a cada ano entre 1999 e 2008.
+							Fonte: \cite{Florian2009}}
 					\label{fig:vulnerabilidades_CVE}
 				\end{center}
 			\end{figure}
@@ -193,7 +193,7 @@
 
 
 			Esse processo inicia quando uma vulnerabilidade é reportada.
-			Ela assume um CAN(Candidate Number), número de candidata.
+			Ela assume um CAN (Candidate Number), número de candidata.
 			Até que ela seja adicionada à lista, ele permanece com um CAN que
 			a identificará. Apenas após o devido estudo e aprovação do caso pela junta
 			responsável, é que ela assume um identificador CVE.
@@ -295,7 +295,7 @@
 			No ano de 1996, a taxonomia proposta por Aslam, em \textsl{Use of a Taxonomy of Security Faults},
 			traria nova acréscimo às pesquisas na área. Segundo, \cite{Katrina2005}(pág. 3), o esquema
 			proposto por Aslam é bastante preciso; consistindo numa série de perguntas para cada
-			categoria de vulnerabilidade. Em \cite{Gregio2005}(pág. 329), encontramos as 
+			categoria de vulnerabilidade. Em \cite{Gregio2005}, pág. 329, encontramos as 
 			classes criadas por Aslam, com suas subdivisões:
 			\begin{enumerate}
 				\item{Falhas de codificação;}
@@ -331,16 +331,38 @@
 			do que a proposição de Aslam. Um de seus principais idealizadores foi Steve Christey.
 			Trata-se de um trabalho com sólidas fundações, pois
 			apresenta um \textsl{Framework} conceitual que permite discutir as vulnerabilidades
-			em diversos níveis. Ele pode ser encontrado em detalhes em \cite{Christey2006}.
+			em diversos níveis. Nele são definidos uma série de conceitos essenciais
+			para o estudo da área. Pode ser encontrado em detalhes em \cite{Christey2006}.
+			
+
 			Dentre as suas contribuições, destacam-se o caráter prático; mais de 1400 vulnerabilidades
 			identificadas no CVE foram devidamente classificadas utilizando esse sistema.
 			Foi uma taxonomia construída de baixa para cima(\textsl{bottom-up}).
+			Essa experiência foi muito útil para a definição dos critérios.
+
+
+			Abaixo, seguem algumas categorias de mais alto nível existentes no PLOVER
+			(existem 30 no total):
+			\begin{description}
+				\item[BUFF]{Contém erros como \textsl{Buffer Overflow} e \textsl{Heap Overflow}.}
+				\item[SPECTS(\textsl{Technology-Specific Special Elements})]{Abrange erros que possibilitam
+					ataques de Injeção de SQL e XSS.}
+				\item[RACE]{Erros advindos de condições de corrida.}
+				\item[CRYPTO]{Falhas relacionadas o uso inadequado ou problemas na criptografia.}
+			\end{description}
+			Conforme será abordado a seguir, o PLOVER serviu de base para a criação do projeto CWE.
 
 			
 
 			Do trabalho de John Viega e outros colaboradores, temos o CLASP. É um conjunto
-			de atividades que busca melhorar a segurança dos sistemas. Ele parte do trabalho
-			proposto por Landwher(que utiliza os critérios de gênese, tempo de introdução e localização).
+			de atividades que busca melhorar a segurança dos sistemas. Embora
+			trate também da classificação das falhas, ele vai muito além. Possui uma formalização
+			de boas práticas para a construção de software seguro através de ciclos de desenvolvimento
+			estruturados, repetíveis e mensuráveis - \cite{Secure2006}.
+			
+
+			No que se refere à classificação, sua contribuição tem origem no trabalho proposto por 
+			Landwher(que utiliza os critérios de gênese, tempo de introdução e localização).
 			O CLASP adiciona outro eixo classificatório: a consequência.
 			As classes mais básicas, tipo do problema, são:
 			\begin{itemize}
@@ -351,7 +373,7 @@
 				\item{Erros de lógica;}
 				\item{\textsl{Malware};}
 			\end{itemize}
-			Para exemplificar, consideremos uma falha que permita um \textsl{buffer overflow}.
+			Para exemplificar, consideremos uma falha que permita um \textsl{Buffer overflow}.
 			Segundo o CLASP, trata-se de um erro de tipo e de \textsl{range} - já
 			que é permitida a escrita além do permitido no \textsl{buffer}. A injeção de SQL
 			também cai na mesma categoria, pois os dados passados pelo usuário são utilizados
@@ -362,7 +384,7 @@
 
 			
 			O \textsl{Seven Pernicious Kingdoms}, de autoria de Katrina Tsipenyuk et alem, conforme
-			\cite{McGraw2006}(capítulo 12), é uma taxonomia que, mesmo sendo imperfeita possibilita
+			\cite{McGraw2006}, capítulo 12, é uma taxonomia que, mesmo sendo imperfeita possibilita
 			um bom entendimento por parte dos desenvolvedores; auxiliando na prevenção de problemas.
 			É estruturada em dois conjuntos emprestados da Biologia: Filo e Reino.
 			O Reino é a classificação mais ampla - enquanto o Filo é uma subdivisão do Reino.
@@ -371,7 +393,7 @@
 			\textsl{The Magic Number Seven, Plus or Minus Two} de George Miller.}. São eles:
 			\begin{description}
 				\item[Erro de validação e de representação]{Resultam da confiança
-					indevida nos dados de entrada. Caso do \textsl{buffer overflow},
+					indevida nos dados de entrada. Caso do \textsl{Buffer Overflow},
 					injeção de SQL, XSS.}
 				\item[Abuso de API]{Sendo a API um contrato entre quem chama a rotina
 					e aquela que é chamada, uma quebra das regras pode resultar em problemas de segurança.
@@ -396,7 +418,7 @@
 			
 			
 			Como subdivisões dos reinos, encontramos, por exemplo, o filo correspondente ao
-			\textsl{buffer overflow} - no reino do Erro de Validação e de Representação.
+			\textsl{Buffer Overflow} - no reino do Erro de Validação e de Representação.
 			Ainda nele, também encontramos o filo de Injeção de Comandos.			
 			Já no reino de \textsl{Features de segurança}, está o filo da Randomização Insegura -
 			que trata da randomização incorreta que pode ser uma fraqueza para a criptografia.
@@ -421,6 +443,8 @@
 			A partir do estudo e da classificação resultante do PLOVER, surgiu a possibilidade
 			de se estabelecer descrições comuns a comunidade para os tipos de vulnerabilidades.
 			Desse esforço, surge o CWE: \textsl{Common Weakness Enumeration}\footnote{http://cwe.mitre.org/}.
+			Embora esteja fundamentada na classificação proposta pelo PLOVER, o CWE não se limita
+			a ela. Também opera com outras como: \textsl{Seven Pernicious Kingdoms} e o CLASP.
 
 			
 			Conforme encontramos em \cite{CWEAbout}, ele é uma resposta à necessidade das instituições
@@ -430,13 +454,26 @@
 			no escopo do CWE.
 			
 
-			Embora esteja fundamentada na classificação proposta pelo PLOVER, o CWE não se limita
-			a ela. Também opera com outras como: \textsl{Seven Pernicious Kingdoms} e o CLASP.
-			
+			Entre os objetivos e impactos diretos do CWE, encontrados em \cite{CWE2009}, temos:
+			\begin{itemize}
+				\item{Providencia uma linguagem comum para as discussões relativas às fraquezas
+					encontradas no software e nos sistemas;}
+				\item{Permite aos fabricantes de ferramentas de segurança fazer afirmações
+					claras e consistentes sobre quais tipos de falhas elas cobrem;}
+				\item{Permite aos compradores de ferramentas de segurança comparar
+					com melhor qualidade as alternativas em virtude da discriminação
+					da cobertura delas encontradas no CWE.}
+				\item{Habilita governos, instituições e a indústria a utilizar a padronização
+					fornecida pelo CWE para estabelecer contratos, termos e condições.}
+			\end{itemize}
 
-	
-
 			
+			Mesmo tendo sido criado recentemente, tendo menos de 5 anos completos, o projeto do 
+			CWE certamente já está trazendo	contribuições para a padronização na área de 
+			classificação de vulnerabilidades.
+			A esperança é que ele se fortalece e possibilite uma referência de grande valor
+			assim como foi estabelecido com o CVE.
+
 
 	\section{Métricas para vulnerabilidades: CVSS}
 		Comparar objetivamente vulnerabilidades de acordo com sua criticidade é
@@ -636,7 +673,7 @@
 			\begin{figure}
 				\begin{center}
 					\includegraphics[width=0.85\textwidth]{cvss_metricas_equacoes.jpg}
-					\caption{Aplicação das métricas e equações do CVSS - Fonte: \cite{Mell2007}}
+					\caption{Aplicação das métricas e equações do CVSS. Fonte: \cite{Mell2007}}
 					\label{fig:cvss_metricas_equacoes}
 				\end{center}
 			\end{figure}
@@ -644,12 +681,14 @@
 			\begin{enumerate}
 				\item{Para cada um dos critérios descritos na Seção \ref{subsec:metricas_cvss},
 					atribuir um valor válido.}
-				\item{Consultar as tabelas, no capítulo	\ref{chap:equacoes_cvss},
+				\item{Consultar as tabelas, no apêndice	\ref{chap:equacoes_cvss},
 					para definir um valor numérico a partir do valor nominal escolhido no passo anterior.}
-				\item{Fazer o cálculo do escore básico usando a equação básica disponível em TODO.}
-				\item{Fazer o cálculo do escore temporal usando sua respectiva equação TODO,
+				\item{Fazer o cálculo do escore básico usando a equação \ref{eq:basica}.
+					Para isso, é necessário resolver antes as equações \ref{eq:explorabilidade} e
+					\ref{eq:impacto} antes.}
+				\item{Fazer o cálculo do escore temporal usando sua respectiva equação - \ref{eq:temporal} -
 					 e o escore básico.	Passo opcional. É possível manter apenas o escore básico como o final.}
-				\item{Calcular o do escore final usando a equação ambiental, TODO,
+				\item{Calcular o do escore final usando a equação ambiental, \ref{eq:ambiental},
 					 a partir do escore temporal. Também é opcional; pois os critérios 
 					ambientais podem ser desconsiderados.}
 			\end{enumerate}

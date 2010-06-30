@@ -3,34 +3,35 @@
 \label{chap:equacoes_cvss}
 
 
-	Abaixo seguem as equações para cálculo do escore básico.
-	\begin{equation}
-		\label{equacao_basica}
-		EscoreBasico = ((0.6 * Impacto)+(0.4 * Explorabilidade) - 1.5)*algo
-	\end{equation}
+	\section{Equações do escore básico}
+		\begin{equation}
+			\label{eq:basica}
+			EscoreBasico = ((0.6 * Impacto)+(0.4 * Explorabilidade) - 1.5)*algo
+		\end{equation}
 
-	\begin{equation}
-		\label{equacao_impacto}
-		Impacto = 10.41 * (1-(1-ImactoConf) * (1-ImpactoInt) * (1-ImpactoDisp))
-	\end{equation}
+		\begin{equation}
+			\label{eq:impacto}
+			Impacto = 10.41 * (1-(1-ImactoConf) * (1-ImpactoInt) * (1-ImpactoDisp))
+		\end{equation}
 
-	\begin{equation}
-		\label{equacao_explorabilidade}
-		Explorabilidade = 20 * VetorAcesso * ComplexidadeAcesso * NecessidadeAut
-	\end{equation}
+		\begin{equation}
+			\label{eq:explorabilidade}
+			Explorabilidade = 20 * VetorAcesso * ComplexidadeAcesso * NecessidadeAut
+		\end{equation}
 
+	\section{Equações do escore temporal}
+		Utiliza o escore básico.
+		\begin{equation}
+			\label{eq:temporal}
+			EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
+		\end{equation}
 
-	Equações para cálculo do escore temporal (utiliza o escore básico):
-	\begin{equation}
-		\label{equacao_temporal}
-		EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
-	\end{equation}
-
-	Equações para cálculo do escore ambiental (utiliza o escore temporal):
-	\begin{equation}
-		\label{equacao_ambiental}
-		EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
-	\end{equation}
+	\section{Equações do escore ambiental}
+	Utiliza o escore temporal.
+		\begin{equation}
+			\label{eq:ambiental}
+			EscoreTemporal = EscoreBasico * FacExploracao * NivelRemed * ConfReport
+		\end{equation}
 	
 
 	% Metricas básicas
