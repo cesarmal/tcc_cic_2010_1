@@ -298,7 +298,8 @@
 	vindo de apenas uma alocação.
 	No exemplo a seguir, é requisitado uma porção de memória de 64 bytes iniciando em NULL.
 	\begin{lstlisting}[label=mmap_example,caption=Mapeamento de memória anônimo.]
-		mmap(NULL, 64, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+		mmap(NULL, 64, PROT_READ | PROT_WRITE, 
+					MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 	\end{lstlisting}
 	Na técnica \textsl{NULL pointer exploit}, conforme veremos mais adiante, essa possibilidade
 	de alocar um bloco com o início pré-determinado é muito útil.
